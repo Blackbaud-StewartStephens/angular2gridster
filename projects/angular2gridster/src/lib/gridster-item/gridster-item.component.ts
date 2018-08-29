@@ -1,10 +1,9 @@
-import { Component, OnInit, ElementRef, Inject, Host, Input, Output,
+import { Component, OnInit, ElementRef, Inject, Input, Output,
     EventEmitter, SimpleChanges, OnChanges, OnDestroy, HostBinding,
-    ChangeDetectionStrategy, AfterViewInit, NgZone, ViewEncapsulation } from '@angular/core';
+    ChangeDetectionStrategy, AfterViewInit, NgZone, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { GridsterService } from '../gridster.service';
-import { GridsterPrototypeService } from '../gridster-prototype/gridster-prototype.service';
 
 import { GridListItem } from '../gridList/GridListItem';
 import {DraggableEvent} from '../utils/DraggableEvent';
@@ -15,8 +14,10 @@ import {utils} from '../utils/utils';
 
 @Component({
     selector: 'ngx-gridster-item',
-    template: `<div class="gridster-item-inner">
-      <ng-content></ng-content>
+    template: `<div class="gridster-item-inner" [ngStyle]="{position: variableHeight ? 'relative' : ''}">
+      <span #contentWrapper class="gridster-content-wrapper">
+        <ng-content></ng-content>
+      </span>
       <div class="gridster-item-resizable-handler handle-s"></div>
       <div class="gridster-item-resizable-handler handle-e"></div>
       <div class="gridster-item-resizable-handler handle-n"></div>
@@ -198,6 +199,10 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
 
     @Input() options: any = {};
 
+    @Input() variableHeight = false;
+
+    @ViewChild('contentWrapper') contentWrapper: ElementRef;
+
     autoSize: boolean;
 
     @HostBinding('class.is-dragging') isDragging = false;
@@ -240,7 +245,6 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
     private resizeSubscriptions: Array<Subscription> = [];
 
     constructor(private zone: NgZone,
-                private gridsterPrototypeService: GridsterPrototypeService,
                 @Inject(ElementRef) elementRef: ElementRef,
                 @Inject(GridsterService) gridster: GridsterService) {
 
@@ -294,6 +298,30 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
         if (this.gridster.options.resizable && this.item.resizable) {
             this.enableResizable();
         }
+
+        if (this.variableHeight) {
+            const readySubscription = this.gridster.gridsterComponent.ready.subscribe(() => {
+                this.gridster.gridList.resizeItem(this.item, { w: this.w, h: 1 });
+                readySubscription.unsubscribe();
+            });
+            let lastOffsetHeight: number;
+            const observer = new MutationObserver((mutations) => {
+                const offsetHeight = this.item.contentHeight;
+                if (offsetHeight !== lastOffsetHeight) {
+                    for (const item of this.gridster.items) {
+                        item.applySize();
+                        item.applyPosition();
+                    }
+                }
+                lastOffsetHeight = offsetHeight;
+            });
+            observer.observe(this.contentWrapper.nativeElement, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                characterData: true
+            });
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -304,20 +332,20 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
 
         ['w', ...Object.keys(GridListItem.W_PROPERTY_MAP).map(breakpoint => GridListItem.W_PROPERTY_MAP[breakpoint])]
         .filter(propName => changes[propName] && !changes[propName].isFirstChange())
-        .forEach((propName: string) => {
+        .forEach((propName: keyof GridsterItemComponent) => {
             if (changes[propName].currentValue > this.options.maxWidth) {
                 this[propName] = this.options.maxWidth;
-                setTimeout(() => this[propName + 'Change'].emit(this[propName]));
+                setTimeout(() => this[<keyof GridsterItemComponent>(propName + 'Change')].emit(this[propName]));
             }
             rerender = true;
         });
 
         ['h', ...Object.keys(GridListItem.H_PROPERTY_MAP).map(breakpoint => GridListItem.H_PROPERTY_MAP[breakpoint])]
             .filter(propName => changes[propName] && !changes[propName].isFirstChange())
-            .forEach((propName: string) => {
+            .forEach((propName: keyof GridsterItemComponent) => {
                 if (changes[propName].currentValue > this.options.maxHeight) {
                     this[propName] = this.options.maxHeight;
-                    setTimeout(() => this[propName + 'Change'].emit(this[propName]));
+                    setTimeout(() => this[<keyof GridsterItemComponent>(propName + 'Change')].emit(this[propName]));
                 }
                 rerender = true;
             });
@@ -392,9 +420,24 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
 
                 const draggable = new Draggable(handler, this.getResizableOptions());
 
-                let startEvent;
-                let startData;
-                let cursorToElementPosition;
+                let startEvent: DraggableEvent;
+                let startData: {
+                    top: number,
+                    left: number,
+                    height: number,
+                    width: number,
+                    minX: number,
+                    maxX: number,
+                    minY: number,
+                    maxY: number,
+                    minW: number,
+                    maxW: number,
+                    minH: number,
+                    maxH: number,
+                    scrollLeft: number,
+                    scrollTop: number
+                };
+                let cursorToElementPosition: { x: number, y: number };
 
                 const dragStartSub = draggable.dragStart
                     .subscribe((event: DraggableEvent) => {
@@ -452,7 +495,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
         });
         this.resizeSubscriptions = [];
 
-        [].forEach.call(this.$element.querySelectorAll('.gridster-item-resizable-handler'), (handler) => {
+        [].forEach.call(this.$element.querySelectorAll('.gridster-item-resizable-handler'), (handler: HTMLElement) => {
             handler.style.display = '';
         });
     }
@@ -462,7 +505,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
             return;
         }
         this.zone.runOutsideAngular(() => {
-            let cursorToElementPosition;
+            let cursorToElementPosition: { x: number, y: number };
 
             const draggable = new Draggable(this.$element, this.getDraggableOptions());
 
@@ -511,7 +554,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
     }
 
     private getResizeHandlers(): HTMLElement[]  {
-        return [].filter.call(this.$element.children[0].children, (el) => {
+        return [].filter.call(this.$element.children[0].children, (el: HTMLElement) => {
 
             return el.classList.contains('gridster-item-resizable-handler');
         });
@@ -540,7 +583,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
         const isItemResizable = this.gridster.options.resizable && this.item.resizable;
         const resizeHandles = this.gridster.options.resizeHandles;
 
-        return isItemResizable && (!resizeHandles || (resizeHandles && !!resizeHandles[direction]));
+        return isItemResizable && (!resizeHandles || (resizeHandles && !!(<any>resizeHandles)[direction]));
     }
 
     private setPositionsForGrid(options: IGridsterOptions) {

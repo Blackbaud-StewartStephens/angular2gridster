@@ -1,6 +1,6 @@
-import { Directive, ElementRef, Input, Output, HostBinding, EventEmitter, OnInit, OnDestroy,
+import { Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy,
     NgZone} from '@angular/core';
-import { Observable, Subscription, fromEvent } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { GridsterPrototypeService } from './gridster-prototype.service';
 import { GridListItem } from '../gridList/GridListItem';
@@ -34,6 +34,9 @@ export class GridsterItemPrototypeDirective implements OnInit, OnDestroy {
     @Input() hMd: number;
     @Input() hLg: number;
     @Input() hXl: number;
+
+    @Input() variableHeight: boolean = false;
+    @Input() variableHeightContainToRow: boolean = false;
 
     positionX: number;
     positionY: number;
@@ -152,7 +155,7 @@ export class GridsterItemPrototypeDirective implements OnInit, OnDestroy {
     }
 
     private enableDragDrop() {
-        let cursorToElementPosition;
+        let cursorToElementPosition: { x: number, y: number };
         const draggable = new Draggable(this.elementRef.nativeElement);
 
         const dragStartSub = draggable.dragStart
@@ -186,7 +189,7 @@ export class GridsterItemPrototypeDirective implements OnInit, OnDestroy {
                 });
             });
 
-        const scrollSub = fromEvent(document, 'scroll')
+        const scrollSub = Observable.fromEvent(document, 'scroll')
             .subscribe(() => {
                 if (this.$element) {
                     this.updateParentElementData();

@@ -159,16 +159,12 @@ npm start
 ```
 
 Windows:
-In CMD run `MKLINK /D .\demo\src\app\gridster D:\Products\git\angular2gridster\src` (make sure the second path is the correct absolute for your environment)
-Then run the following
+In CMD run `MKLINK /D .\src\app\angular2gridster D:\your\absolute\path\to\angular2gridster\projects\angular2gridster\src\lib` (make sure the second path is the correct absolute for your environment).
+
+Then run the following:
 ```shell
-    cd angular2gridster
     npm install
-    cd demo
-    npm install
-    cd ..
-    npm run install-demo
-    npm run serve-demo
+    ng serve
 ```
 
 Go to: http://localhost:4200/
