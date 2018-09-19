@@ -1,0 +1,3 @@
+[submodule "out-tsc/lib/projects/angular2gridster/src"]
+	path = out-tsc/lib/projects/angular2gridster/src
+	url = https://github.com/Blackbaud-StewartStephens/angular2gridster-precompiled.git
