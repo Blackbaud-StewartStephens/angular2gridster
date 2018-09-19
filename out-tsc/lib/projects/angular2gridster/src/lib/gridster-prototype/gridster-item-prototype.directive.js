@@ -5,8 +5,8 @@ import { GridsterPrototypeService } from './gridster-prototype.service';
 import { GridListItem } from '../gridList/GridListItem';
 import { Draggable } from '../utils/draggable';
 import { utils } from '../utils/utils';
-let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
-    constructor(zone, elementRef, gridsterPrototype) {
+var GridsterItemPrototypeDirective = /** @class */ (function () {
+    function GridsterItemPrototypeDirective(zone, elementRef, gridsterPrototype) {
         this.zone = zone;
         this.elementRef = elementRef;
         this.gridsterPrototype = gridsterPrototype;
@@ -25,14 +25,23 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
         this.subscribtions = [];
         this.item = (new GridListItem()).setFromGridsterItemPrototype(this);
     }
-    // must be set to true because of item dragAndDrop configuration
-    get dragAndDrop() {
-        return true;
-    }
-    get gridster() {
-        return this.dragContextGridster;
-    }
-    ngOnInit() {
+    Object.defineProperty(GridsterItemPrototypeDirective.prototype, "dragAndDrop", {
+        // must be set to true because of item dragAndDrop configuration
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridsterItemPrototypeDirective.prototype, "gridster", {
+        get: function () {
+            return this.dragContextGridster;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GridsterItemPrototypeDirective.prototype.ngOnInit = function () {
+        var _this = this;
         this.wSm = this.wSm || this.w;
         this.hSm = this.hSm || this.h;
         this.wMd = this.wMd || this.w;
@@ -41,16 +50,16 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
         this.hLg = this.hLg || this.h;
         this.wXl = this.wXl || this.w;
         this.hXl = this.hXl || this.h;
-        this.zone.runOutsideAngular(() => {
-            this.enableDragDrop();
+        this.zone.runOutsideAngular(function () {
+            _this.enableDragDrop();
         });
-    }
-    ngOnDestroy() {
-        this.subscribtions.forEach((sub) => {
+    };
+    GridsterItemPrototypeDirective.prototype.ngOnDestroy = function () {
+        this.subscribtions.forEach(function (sub) {
             sub.unsubscribe();
         });
-    }
-    onDrop(gridster) {
+    };
+    GridsterItemPrototypeDirective.prototype.onDrop = function (gridster) {
         if (!this.config.helper) {
             this.$element.parentNode.removeChild(this.$element);
         }
@@ -58,98 +67,99 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
             item: this.item,
             gridster: gridster
         });
-    }
-    onCancel() {
+    };
+    GridsterItemPrototypeDirective.prototype.onCancel = function () {
         this.cancel.emit({ item: this.item });
-    }
-    onEnter(gridster) {
+    };
+    GridsterItemPrototypeDirective.prototype.onEnter = function (gridster) {
         this.enter.emit({
             item: this.item,
             gridster: gridster
         });
-    }
-    onOver(gridster) { }
-    onOut(gridster) {
+    };
+    GridsterItemPrototypeDirective.prototype.onOver = function (gridster) { };
+    GridsterItemPrototypeDirective.prototype.onOut = function (gridster) {
         this.out.emit({
             item: this.item,
             gridster: gridster
         });
-    }
-    getPositionToGridster(gridster) {
-        const relativeContainerCoords = this.getContainerCoordsToGridster(gridster);
+    };
+    GridsterItemPrototypeDirective.prototype.getPositionToGridster = function (gridster) {
+        var relativeContainerCoords = this.getContainerCoordsToGridster(gridster);
         return {
             y: this.positionY - relativeContainerCoords.top,
             x: this.positionX - relativeContainerCoords.left
         };
-    }
-    setDragContextGridster(gridster) {
+    };
+    GridsterItemPrototypeDirective.prototype.setDragContextGridster = function (gridster) {
         this.dragContextGridster = gridster;
-    }
-    getContainerCoordsToGridster(gridster) {
+    };
+    GridsterItemPrototypeDirective.prototype.getContainerCoordsToGridster = function (gridster) {
         return {
             left: gridster.gridsterRect.left - this.parentRect.left,
             top: gridster.gridsterRect.top - this.parentRect.top
         };
-    }
-    enableDragDrop() {
-        let cursorToElementPosition;
-        const draggable = new Draggable(this.elementRef.nativeElement);
-        const dragStartSub = draggable.dragStart
-            .subscribe((event) => {
-            this.zone.run(() => {
-                this.$element = this.provideDragElement();
-                this.containerRectange = this.$element.parentElement.getBoundingClientRect();
-                this.updateParentElementData();
-                this.onStart(event);
-                cursorToElementPosition = event.getRelativeCoordinates(this.$element);
+    };
+    GridsterItemPrototypeDirective.prototype.enableDragDrop = function () {
+        var _this = this;
+        var cursorToElementPosition;
+        var draggable = new Draggable(this.elementRef.nativeElement);
+        var dragStartSub = draggable.dragStart
+            .subscribe(function (event) {
+            _this.zone.run(function () {
+                _this.$element = _this.provideDragElement();
+                _this.containerRectange = _this.$element.parentElement.getBoundingClientRect();
+                _this.updateParentElementData();
+                _this.onStart(event);
+                cursorToElementPosition = event.getRelativeCoordinates(_this.$element);
             });
         });
-        const dragSub = draggable.dragMove
-            .subscribe((event) => {
-            this.setElementPosition(this.$element, {
-                x: event.clientX - cursorToElementPosition.x - this.parentRect.left,
-                y: event.clientY - cursorToElementPosition.y - this.parentRect.top
+        var dragSub = draggable.dragMove
+            .subscribe(function (event) {
+            _this.setElementPosition(_this.$element, {
+                x: event.clientX - cursorToElementPosition.x - _this.parentRect.left,
+                y: event.clientY - cursorToElementPosition.y - _this.parentRect.top
             });
-            this.onDrag(event);
+            _this.onDrag(event);
         });
-        const dragStopSub = draggable.dragStop
-            .subscribe((event) => {
-            this.zone.run(() => {
-                this.onStop(event);
-                this.$element = null;
+        var dragStopSub = draggable.dragStop
+            .subscribe(function (event) {
+            _this.zone.run(function () {
+                _this.onStop(event);
+                _this.$element = null;
             });
         });
-        const scrollSub = Observable.fromEvent(document, 'scroll')
-            .subscribe(() => {
-            if (this.$element) {
-                this.updateParentElementData();
+        var scrollSub = Observable.fromEvent(document, 'scroll')
+            .subscribe(function () {
+            if (_this.$element) {
+                _this.updateParentElementData();
             }
         });
         this.subscribtions = this.subscribtions.concat([dragStartSub, dragSub, dragStopSub, scrollSub]);
-    }
-    setElementPosition(element, position) {
+    };
+    GridsterItemPrototypeDirective.prototype.setElementPosition = function (element, position) {
         this.positionX = position.x;
         this.positionY = position.y;
         utils.setCssElementPosition(element, position);
-    }
-    updateParentElementData() {
+    };
+    GridsterItemPrototypeDirective.prototype.updateParentElementData = function () {
         this.parentRect = this.$element.parentElement.getBoundingClientRect();
         this.parentOffset = {
             left: this.$element.parentElement.offsetLeft,
             top: this.$element.parentElement.offsetTop
         };
-    }
-    onStart(event) {
+    };
+    GridsterItemPrototypeDirective.prototype.onStart = function (event) {
         this.isDragging = true;
         this.$element.style.pointerEvents = 'none';
         this.$element.style.position = 'absolute';
         this.gridsterPrototype.dragItemStart(this, event);
         this.start.emit({ item: this.item });
-    }
-    onDrag(event) {
+    };
+    GridsterItemPrototypeDirective.prototype.onDrag = function (event) {
         this.gridsterPrototype.updatePrototypePosition(this, event);
-    }
-    onStop(event) {
+    };
+    GridsterItemPrototypeDirective.prototype.onStop = function (event) {
         this.gridsterPrototype.dragItemStop(this, event);
         this.isDragging = false;
         this.$element.style.pointerEvents = 'auto';
@@ -158,9 +168,9 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
         if (this.config.helper) {
             this.$element.parentNode.removeChild(this.$element);
         }
-    }
-    provideDragElement() {
-        let dragElement = this.elementRef.nativeElement;
+    };
+    GridsterItemPrototypeDirective.prototype.provideDragElement = function () {
+        var dragElement = this.elementRef.nativeElement;
         if (this.config.helper) {
             dragElement = (dragElement).cloneNode(true);
             document.body.appendChild(this.fixStylesForBodyHelper(dragElement));
@@ -169,12 +179,12 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
             this.fixStylesForRelativeElement(dragElement);
         }
         return dragElement;
-    }
-    fixStylesForRelativeElement(el) {
+    };
+    GridsterItemPrototypeDirective.prototype.fixStylesForRelativeElement = function (el) {
         if (window.getComputedStyle(el).position === 'absolute') {
             return el;
         }
-        const rect = this.elementRef.nativeElement.getBoundingClientRect();
+        var rect = this.elementRef.nativeElement.getBoundingClientRect();
         this.containerRectange = el.parentElement.getBoundingClientRect();
         el.style.position = 'absolute';
         this.setElementPosition(el, {
@@ -182,105 +192,106 @@ let GridsterItemPrototypeDirective = class GridsterItemPrototypeDirective {
             y: rect.top - this.containerRectange.top
         });
         return el;
-    }
+    };
     /**
      * When element is cloned and append to body it should have position absolute and coords set by original
      * relative prototype element position.
      */
-    fixStylesForBodyHelper(el) {
-        const bodyRect = document.body.getBoundingClientRect();
-        const rect = this.elementRef.nativeElement.getBoundingClientRect();
+    GridsterItemPrototypeDirective.prototype.fixStylesForBodyHelper = function (el) {
+        var bodyRect = document.body.getBoundingClientRect();
+        var rect = this.elementRef.nativeElement.getBoundingClientRect();
         el.style.position = 'absolute';
         this.setElementPosition(el, {
             x: rect.left - bodyRect.left,
             y: rect.top - bodyRect.top
         });
         return el;
-    }
-};
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "drop", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "start", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "cancel", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "enter", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "out", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "data", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemPrototypeDirective.prototype, "config", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "w", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "wSm", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "wMd", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "wLg", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "wXl", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "h", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "hSm", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "hMd", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "hLg", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemPrototypeDirective.prototype, "hXl", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Boolean)
-], GridsterItemPrototypeDirective.prototype, "variableHeight", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Boolean)
-], GridsterItemPrototypeDirective.prototype, "variableHeightContainToRow", void 0);
-GridsterItemPrototypeDirective = tslib_1.__decorate([
-    Directive({
-        selector: '[ngxGridsterItemPrototype]'
-    }),
-    tslib_1.__metadata("design:paramtypes", [NgZone,
-        ElementRef,
-        GridsterPrototypeService])
-], GridsterItemPrototypeDirective);
+    };
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "drop", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "start", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "cancel", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "enter", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "out", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "data", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemPrototypeDirective.prototype, "config", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "w", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "wSm", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "wMd", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "wLg", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "wXl", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "h", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "hSm", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "hMd", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "hLg", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemPrototypeDirective.prototype, "hXl", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Boolean)
+    ], GridsterItemPrototypeDirective.prototype, "variableHeight", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Boolean)
+    ], GridsterItemPrototypeDirective.prototype, "variableHeightContainToRow", void 0);
+    GridsterItemPrototypeDirective = tslib_1.__decorate([
+        Directive({
+            selector: '[ngxGridsterItemPrototype]'
+        }),
+        tslib_1.__metadata("design:paramtypes", [NgZone,
+            ElementRef,
+            GridsterPrototypeService])
+    ], GridsterItemPrototypeDirective);
+    return GridsterItemPrototypeDirective;
+}());
 export { GridsterItemPrototypeDirective };
 //# sourceMappingURL=gridster-item-prototype.directive.js.map

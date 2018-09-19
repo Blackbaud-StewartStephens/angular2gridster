@@ -1,105 +1,154 @@
-export class GridListItem {
-    constructor() { }
-    get $element() {
-        return this.getItem().$element;
+var GridListItem = /** @class */ (function () {
+    function GridListItem() {
     }
-    get x() {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        return this.getValueX(breakpoint);
-    }
-    set x(value) {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        this.setValueX(value, breakpoint);
-    }
-    get y() {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        return this.getValueY(breakpoint);
-    }
-    set y(value) {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        this.setValueY(value, breakpoint);
-    }
-    get w() {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        return this.getValueW(breakpoint);
-    }
-    set w(value) {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        this.setValueW(value, breakpoint);
-    }
-    get h() {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        return this.getValueH(breakpoint);
-    }
-    set h(value) {
-        const item = this.getItem();
-        const breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
-        this.setValueH(value, breakpoint);
-    }
-    get autoSize() {
-        return this.getItem().autoSize;
-    }
-    set autoSize(value) {
-        this.getItem().autoSize = value;
-    }
-    get dragAndDrop() {
-        return !!this.getItem().dragAndDrop;
-    }
-    get resizable() {
-        return !!this.getItem().resizable;
-    }
-    get positionX() {
-        const item = this.itemComponent || this.itemPrototype;
-        if (!item) {
-            return null;
-        }
-        return item.positionX;
-    }
-    get positionY() {
-        const item = this.itemComponent || this.itemPrototype;
-        if (!item) {
-            return null;
-        }
-        return item.positionY;
-    }
-    get variableHeight() {
-        return this.getItem().variableHeight;
-    }
-    get contentHeight() {
-        const contentHeight = this.itemComponent.contentWrapper.nativeElement.offsetheight || 0;
-        const childHeight = this.$element.firstChild.offsetHeight || 0;
-        return Math.max(contentHeight, childHeight);
-    }
-    setFromGridsterItem(item) {
+    Object.defineProperty(GridListItem.prototype, "$element", {
+        get: function () {
+            return this.getItem().$element;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "x", {
+        get: function () {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            return this.getValueX(breakpoint);
+        },
+        set: function (value) {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            this.setValueX(value, breakpoint);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "y", {
+        get: function () {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            return this.getValueY(breakpoint);
+        },
+        set: function (value) {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            this.setValueY(value, breakpoint);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "w", {
+        get: function () {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            return this.getValueW(breakpoint);
+        },
+        set: function (value) {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            this.setValueW(value, breakpoint);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "h", {
+        get: function () {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            return this.getValueH(breakpoint);
+        },
+        set: function (value) {
+            var item = this.getItem();
+            var breakpoint = item.gridster ? item.gridster.options.breakpoint : null;
+            this.setValueH(value, breakpoint);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "autoSize", {
+        get: function () {
+            return this.getItem().autoSize;
+        },
+        set: function (value) {
+            this.getItem().autoSize = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "dragAndDrop", {
+        get: function () {
+            return !!this.getItem().dragAndDrop;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "resizable", {
+        get: function () {
+            return !!this.getItem().resizable;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "positionX", {
+        get: function () {
+            var item = this.itemComponent || this.itemPrototype;
+            if (!item) {
+                return null;
+            }
+            return item.positionX;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "positionY", {
+        get: function () {
+            var item = this.itemComponent || this.itemPrototype;
+            if (!item) {
+                return null;
+            }
+            return item.positionY;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "variableHeight", {
+        get: function () {
+            return this.getItem().variableHeight;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridListItem.prototype, "contentHeight", {
+        get: function () {
+            var contentHeight = this.itemComponent.contentWrapper.nativeElement.offsetheight || 0;
+            var childHeight = this.$element.firstChild.offsetHeight || 0;
+            return Math.max(contentHeight, childHeight);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GridListItem.prototype.setFromGridsterItem = function (item) {
         if (this.isItemSet()) {
             throw new Error('GridListItem is already set.');
         }
         this.itemComponent = item;
         return this;
-    }
-    setFromGridsterItemPrototype(item) {
+    };
+    GridListItem.prototype.setFromGridsterItemPrototype = function (item) {
         if (this.isItemSet()) {
             throw new Error('GridListItem is already set.');
         }
         this.itemPrototype = item;
         return this;
-    }
-    setFromObjectLiteral(item) {
+    };
+    GridListItem.prototype.setFromObjectLiteral = function (item) {
         if (this.isItemSet()) {
             throw new Error('GridListItem is already set.');
         }
         this.itemObject = item;
         return this;
-    }
-    copy() {
-        const itemCopy = new GridListItem();
+    };
+    GridListItem.prototype.copy = function () {
+        var itemCopy = new GridListItem();
         return itemCopy.setFromObjectLiteral({
             $element: this.$element,
             x: this.x,
@@ -110,9 +159,9 @@ export class GridListItem {
             dragAndDrop: this.dragAndDrop,
             resizable: this.resizable
         });
-    }
-    copyForBreakpoint(breakpoint) {
-        const itemCopy = new GridListItem();
+    };
+    GridListItem.prototype.copyForBreakpoint = function (breakpoint) {
+        var itemCopy = new GridListItem();
         return itemCopy.setFromObjectLiteral({
             $element: this.$element,
             x: this.getValueX(breakpoint),
@@ -123,83 +172,83 @@ export class GridListItem {
             dragAndDrop: this.dragAndDrop,
             resizable: this.resizable
         });
-    }
-    getValueX(breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.getValueX = function (breakpoint) {
+        var item = this.getItem();
         return item[this.getXProperty(breakpoint)];
-    }
-    getValueY(breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.getValueY = function (breakpoint) {
+        var item = this.getItem();
         return item[this.getYProperty(breakpoint)];
-    }
-    getValueW(breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.getValueW = function (breakpoint) {
+        var item = this.getItem();
         return item[this.getWProperty(breakpoint)] || 1;
-    }
-    getValueH(breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.getValueH = function (breakpoint) {
+        var item = this.getItem();
         return item[this.getHProperty(breakpoint)] || 1;
-    }
-    setValueX(value, breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.setValueX = function (value, breakpoint) {
+        var item = this.getItem();
         item[this.getXProperty(breakpoint)] = value;
-    }
-    setValueY(value, breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.setValueY = function (value, breakpoint) {
+        var item = this.getItem();
         item[this.getYProperty(breakpoint)] = value;
-    }
-    setValueW(value, breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.setValueW = function (value, breakpoint) {
+        var item = this.getItem();
         item[this.getWProperty(breakpoint)] = value;
-    }
-    setValueH(value, breakpoint) {
-        const item = this.getItem();
+    };
+    GridListItem.prototype.setValueH = function (value, breakpoint) {
+        var item = this.getItem();
         item[this.getHProperty(breakpoint)] = value;
-    }
-    triggerChangeX(breakpoint) {
-        const item = this.itemComponent;
+    };
+    GridListItem.prototype.triggerChangeX = function (breakpoint) {
+        var item = this.itemComponent;
         if (item) {
             item[this.getXProperty(breakpoint) + 'Change'].emit(this.getValueX(breakpoint));
         }
-    }
-    triggerChangeY(breakpoint) {
-        const item = this.itemComponent;
+    };
+    GridListItem.prototype.triggerChangeY = function (breakpoint) {
+        var item = this.itemComponent;
         if (item) {
             item[this.getYProperty(breakpoint) + 'Change'].emit(this.getValueY(breakpoint));
         }
-    }
-    triggerChangeW(breakpoint) {
-        const item = this.itemComponent;
+    };
+    GridListItem.prototype.triggerChangeW = function (breakpoint) {
+        var item = this.itemComponent;
         if (item) {
             item[this.getWProperty(breakpoint) + 'Change'].emit(this.getValueW(breakpoint));
         }
-    }
-    triggerChangeH(breakpoint) {
-        const item = this.itemComponent;
+    };
+    GridListItem.prototype.triggerChangeH = function (breakpoint) {
+        var item = this.itemComponent;
         if (item) {
             item[this.getHProperty(breakpoint) + 'Change'].emit(this.getValueH(breakpoint));
         }
-    }
-    hasPositions(breakpoint) {
-        const x = this.getValueX(breakpoint);
-        const y = this.getValueY(breakpoint);
+    };
+    GridListItem.prototype.hasPositions = function (breakpoint) {
+        var x = this.getValueX(breakpoint);
+        var y = this.getValueY(breakpoint);
         return (x || x === 0) && (y || y === 0);
-    }
-    applyPosition(gridster) {
-        const position = this.calculatePosition(gridster);
+    };
+    GridListItem.prototype.applyPosition = function (gridster) {
+        var position = this.calculatePosition(gridster);
         this.itemComponent.positionX = position.left;
         this.itemComponent.positionY = position.top;
         this.itemComponent.updateElemenetPosition();
-    }
-    calculatePosition(gridster) {
+    };
+    GridListItem.prototype.calculatePosition = function (gridster) {
         if (!gridster && !this.itemComponent) {
             return { left: 0, top: 0 };
         }
         gridster = gridster || this.itemComponent.gridster;
-        let top;
+        var top;
         if (gridster.gridList) {
-            const rowHeights = gridster.getRowHeights();
-            const rowTops = gridster.getRowTops(rowHeights);
+            var rowHeights = gridster.getRowHeights();
+            var rowTops = gridster.getRowTops(rowHeights);
             top = rowTops[this.y];
         }
         else {
@@ -209,34 +258,34 @@ export class GridListItem {
             left: this.x * gridster.cellWidth,
             top: top
         };
-    }
-    applySize(gridster) {
-        const size = this.calculateSize(gridster);
+    };
+    GridListItem.prototype.applySize = function (gridster) {
+        var size = this.calculateSize(gridster);
         this.$element.style.width = size.width + 'px';
         this.$element.style.height = size.height + 'px';
-    }
-    calculateSize(gridster) {
+    };
+    GridListItem.prototype.calculateSize = function (gridster) {
         if (!gridster && !this.itemComponent) {
             return { width: 0, height: 0 };
         }
         gridster = gridster || this.itemComponent.gridster;
-        let rowHeights, rowTops;
+        var rowHeights, rowTops;
         if (gridster.gridList) {
             rowHeights = gridster.getRowHeights();
             rowTops = gridster.getRowTops(rowHeights);
         }
-        let width = this.w;
-        let height = this.h;
+        var width = this.w;
+        var height = this.h;
         if (gridster.options.direction === 'vertical') {
             width = Math.min(width, gridster.options.lanes);
         }
         if (gridster.options.direction === 'horizontal') {
             height = Math.min(height, gridster.options.lanes);
         }
-        let pixelHeight;
+        var pixelHeight;
         if (rowHeights) {
             pixelHeight = 0;
-            for (let i = this.y; i < this.y + height; i++) {
+            for (var i = this.y; i < this.y + height; i++) {
                 pixelHeight += rowHeights[i];
             }
         }
@@ -247,85 +296,87 @@ export class GridListItem {
             width: width * gridster.cellWidth,
             height: pixelHeight
         };
-    }
-    getXProperty(breakpoint) {
+    };
+    GridListItem.prototype.getXProperty = function (breakpoint) {
         if (breakpoint && this.itemComponent) {
             return GridListItem.X_PROPERTY_MAP[breakpoint];
         }
         else {
             return 'x';
         }
-    }
-    getYProperty(breakpoint) {
+    };
+    GridListItem.prototype.getYProperty = function (breakpoint) {
         if (breakpoint && this.itemComponent) {
             return GridListItem.Y_PROPERTY_MAP[breakpoint];
         }
         else {
             return 'y';
         }
-    }
-    getWProperty(breakpoint) {
+    };
+    GridListItem.prototype.getWProperty = function (breakpoint) {
         if (this.itemPrototype) {
             return this.itemPrototype[GridListItem.W_PROPERTY_MAP[breakpoint]] ?
                 GridListItem.W_PROPERTY_MAP[breakpoint] : 'w';
         }
-        const item = this.getItem();
-        const responsiveSizes = item.gridster && item.gridster.options.responsiveSizes;
+        var item = this.getItem();
+        var responsiveSizes = item.gridster && item.gridster.options.responsiveSizes;
         if (breakpoint && responsiveSizes) {
             return GridListItem.W_PROPERTY_MAP[breakpoint];
         }
         else {
             return 'w';
         }
-    }
-    getHProperty(breakpoint) {
+    };
+    GridListItem.prototype.getHProperty = function (breakpoint) {
         if (this.itemPrototype) {
             return this.itemPrototype[GridListItem.H_PROPERTY_MAP[breakpoint]] ?
                 GridListItem.H_PROPERTY_MAP[breakpoint] : 'w';
         }
-        const item = this.getItem();
-        const responsiveSizes = item.gridster && item.gridster.options.responsiveSizes;
+        var item = this.getItem();
+        var responsiveSizes = item.gridster && item.gridster.options.responsiveSizes;
         if (breakpoint && responsiveSizes) {
             return GridListItem.H_PROPERTY_MAP[breakpoint];
         }
         else {
             return 'h';
         }
-    }
-    getItem() {
-        const item = this.itemComponent || this.itemPrototype || this.itemObject;
+    };
+    GridListItem.prototype.getItem = function () {
+        var item = this.itemComponent || this.itemPrototype || this.itemObject;
         if (!item) {
             throw new Error('GridListItem is not set.');
         }
         return item;
-    }
-    isItemSet() {
+    };
+    GridListItem.prototype.isItemSet = function () {
         return this.itemComponent || this.itemPrototype || this.itemObject;
-    }
-}
-GridListItem.BREAKPOINTS = ['sm', 'md', 'lg', 'xl'];
-GridListItem.X_PROPERTY_MAP = {
-    sm: 'xSm',
-    md: 'xMd',
-    lg: 'xLg',
-    xl: 'xXl'
-};
-GridListItem.Y_PROPERTY_MAP = {
-    sm: 'ySm',
-    md: 'yMd',
-    lg: 'yLg',
-    xl: 'yXl'
-};
-GridListItem.W_PROPERTY_MAP = {
-    sm: 'wSm',
-    md: 'wMd',
-    lg: 'wLg',
-    xl: 'wXl'
-};
-GridListItem.H_PROPERTY_MAP = {
-    sm: 'hSm',
-    md: 'hMd',
-    lg: 'hLg',
-    xl: 'hXl'
-};
+    };
+    GridListItem.BREAKPOINTS = ['sm', 'md', 'lg', 'xl'];
+    GridListItem.X_PROPERTY_MAP = {
+        sm: 'xSm',
+        md: 'xMd',
+        lg: 'xLg',
+        xl: 'xXl'
+    };
+    GridListItem.Y_PROPERTY_MAP = {
+        sm: 'ySm',
+        md: 'yMd',
+        lg: 'yLg',
+        xl: 'yXl'
+    };
+    GridListItem.W_PROPERTY_MAP = {
+        sm: 'wSm',
+        md: 'wMd',
+        lg: 'wLg',
+        xl: 'wXl'
+    };
+    GridListItem.H_PROPERTY_MAP = {
+        sm: 'hSm',
+        md: 'hMd',
+        lg: 'hLg',
+        xl: 'hXl'
+    };
+    return GridListItem;
+}());
+export { GridListItem };
 //# sourceMappingURL=GridListItem.js.map

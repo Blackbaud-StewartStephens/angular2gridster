@@ -1,8 +1,11 @@
-import { ElementRef, EventEmitter, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { GridsterPrototypeService } from './gridster-prototype.service';
 import { GridListItem } from '../gridList/GridListItem';
 import { GridsterService } from '../gridster.service';
+@Directive({
+    selector: '[ngxGridsterItemPrototype]'
+})
 export declare class GridsterItemPrototypeDirective implements OnInit, OnDestroy {
     private zone;
     private elementRef;

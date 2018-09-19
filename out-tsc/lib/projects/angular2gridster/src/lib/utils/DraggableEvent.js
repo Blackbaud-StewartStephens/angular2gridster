@@ -1,5 +1,5 @@
-export class DraggableEvent {
-    constructor(event) {
+var DraggableEvent = /** @class */ (function () {
+    function DraggableEvent(event) {
         if (event.touches) {
             this.touchEvent = event;
             this.setDataFromTouchEvent(this.touchEvent);
@@ -9,11 +9,11 @@ export class DraggableEvent {
             this.setDataFromMouseEvent(this.mouseEvent);
         }
     }
-    isTouchEvent() {
+    DraggableEvent.prototype.isTouchEvent = function () {
         return !!this.touchEvent;
-    }
-    pauseEvent() {
-        const event = this.touchEvent || this.mouseEvent;
+    };
+    DraggableEvent.prototype.pauseEvent = function () {
+        var event = this.touchEvent || this.mouseEvent;
         if (event.stopPropagation) {
             event.stopPropagation();
         }
@@ -23,32 +23,34 @@ export class DraggableEvent {
         event.cancelBubble = true;
         event.returnValue = false;
         return false;
-    }
-    getRelativeCoordinates(container) {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
-        const rect = container.getBoundingClientRect();
+    };
+    DraggableEvent.prototype.getRelativeCoordinates = function (container) {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+        var rect = container.getBoundingClientRect();
         return {
             x: this.pageX - rect.left - scrollLeft,
             y: this.pageY - rect.top - scrollTop,
         };
-    }
-    setDataFromMouseEvent(event) {
+    };
+    DraggableEvent.prototype.setDataFromMouseEvent = function (event) {
         this.target = event.target;
         this.clientX = event.clientX;
         this.clientY = event.clientY;
         this.pageX = event.pageX;
         this.pageY = event.pageY;
         this.type = event.type;
-    }
-    setDataFromTouchEvent(event) {
-        const touch = event.touches[0] || event.changedTouches[0];
+    };
+    DraggableEvent.prototype.setDataFromTouchEvent = function (event) {
+        var touch = event.touches[0] || event.changedTouches[0];
         this.target = event.target;
         this.clientX = touch.clientX;
         this.clientY = touch.clientY;
         this.pageX = touch.pageX;
         this.pageY = touch.pageY;
         this.type = event.type;
-    }
-}
+    };
+    return DraggableEvent;
+}());
+export { DraggableEvent };
 //# sourceMappingURL=DraggableEvent.js.map

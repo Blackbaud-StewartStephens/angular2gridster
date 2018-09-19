@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
-export class GridsterOptions {
-    constructor(config) {
+var GridsterOptions = /** @class */ (function () {
+    function GridsterOptions(config) {
+        var _this = this;
         this.defaults = {
             lanes: 5,
             direction: 'horizontal',
@@ -24,11 +25,11 @@ export class GridsterOptions {
         };
         this.basicOptions = config;
         this.responsiveOptions = this.extendResponsiveOptions(config.responsiveOptions || []);
-        this.change = Observable.merge(Observable.of(this.getOptionsByWidth(document.documentElement.clientWidth)), Observable.fromEvent(window, 'resize').pipe(debounceTime(config.responsiveDebounce || 0), map((event) => this.getOptionsByWidth(document.documentElement.clientWidth)))).pipe(distinctUntilChanged(null, (options) => options.minWidth));
+        this.change = Observable.merge(Observable.of(this.getOptionsByWidth(document.documentElement.clientWidth)), Observable.fromEvent(window, 'resize').pipe(debounceTime(config.responsiveDebounce || 0), map(function (event) { return _this.getOptionsByWidth(document.documentElement.clientWidth); }))).pipe(distinctUntilChanged(null, function (options) { return options.minWidth; }));
     }
-    getOptionsByWidth(width) {
-        let i = 0;
-        let options = Object.assign({}, this.defaults, this.basicOptions);
+    GridsterOptions.prototype.getOptionsByWidth = function (width) {
+        var i = 0;
+        var options = Object.assign({}, this.defaults, this.basicOptions);
         while (this.responsiveOptions[i]) {
             if (this.responsiveOptions[i].minWidth <= width) {
                 options = this.responsiveOptions[i];
@@ -36,17 +37,20 @@ export class GridsterOptions {
             i++;
         }
         return options;
-    }
-    extendResponsiveOptions(responsiveOptions) {
+    };
+    GridsterOptions.prototype.extendResponsiveOptions = function (responsiveOptions) {
+        var _this = this;
         return responsiveOptions
-            .filter(options => options.breakpoint)
-            .map((options) => {
+            .filter(function (options) { return options.breakpoint; })
+            .map(function (options) {
             return Object.assign({
-                minWidth: this.breakpointsMap[options.breakpoint] || 0
+                minWidth: _this.breakpointsMap[options.breakpoint] || 0
             }, options);
         })
-            .sort((curr, next) => curr.minWidth - next.minWidth)
-            .map((options) => Object.assign({}, this.defaults, this.basicOptions, options));
-    }
-}
+            .sort(function (curr, next) { return curr.minWidth - next.minWidth; })
+            .map(function (options) { return Object.assign({}, _this.defaults, _this.basicOptions, options); });
+    };
+    return GridsterOptions;
+}());
+export { GridsterOptions };
 //# sourceMappingURL=GridsterOptions.js.map

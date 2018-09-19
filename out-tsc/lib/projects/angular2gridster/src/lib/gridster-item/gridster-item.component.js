@@ -5,8 +5,8 @@ import { GridListItem } from '../gridList/GridListItem';
 import { Draggable } from '../utils/draggable';
 import { GridList } from '../gridList/gridList';
 import { utils } from '../utils/utils';
-let GridsterItemComponent = class GridsterItemComponent {
-    constructor(zone, elementRef, gridster) {
+var GridsterItemComponent = /** @class */ (function () {
+    function GridsterItemComponent(zone, elementRef, gridster) {
         this.zone = zone;
         this.xChange = new EventEmitter(true);
         this.yChange = new EventEmitter(true);
@@ -57,19 +57,27 @@ let GridsterItemComponent = class GridsterItemComponent {
             this.preventAnimation();
         }
     }
-    set positionX(value) {
-        this._positionX = value;
-    }
-    get positionX() {
-        return this._positionX;
-    }
-    set positionY(value) {
-        this._positionY = value;
-    }
-    get positionY() {
-        return this._positionY;
-    }
-    ngOnInit() {
+    Object.defineProperty(GridsterItemComponent.prototype, "positionX", {
+        get: function () {
+            return this._positionX;
+        },
+        set: function (value) {
+            this._positionX = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GridsterItemComponent.prototype, "positionY", {
+        get: function () {
+            return this._positionY;
+        },
+        set: function (value) {
+            this._positionY = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GridsterItemComponent.prototype.ngOnInit = function () {
         this.options = Object.assign(this.defaultOptions, this.options);
         this.w = this.w || this.options.defaultWidth;
         this.h = this.h || this.options.defaultHeight;
@@ -95,26 +103,28 @@ let GridsterItemComponent = class GridsterItemComponent {
             this.gridster.render();
             this.gridster.updateCachedItems();
         }
-    }
-    ngAfterViewInit() {
+    };
+    GridsterItemComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
         if (this.gridster.options.resizable && this.item.resizable) {
             this.enableResizable();
         }
         if (this.variableHeight) {
-            const readySubscription = this.gridster.gridsterComponent.ready.subscribe(() => {
-                this.gridster.gridList.resizeItem(this.item, { w: this.w, h: 1 });
-                readySubscription.unsubscribe();
+            var readySubscription_1 = this.gridster.gridsterComponent.ready.subscribe(function () {
+                _this.gridster.gridList.resizeItem(_this.item, { w: _this.w, h: 1 });
+                readySubscription_1.unsubscribe();
             });
-            let lastOffsetHeight;
-            const observer = new MutationObserver((mutations) => {
-                const offsetHeight = this.item.contentHeight;
-                if (offsetHeight !== lastOffsetHeight) {
-                    for (const item of this.gridster.items) {
+            var lastOffsetHeight_1;
+            var observer = new MutationObserver(function (mutations) {
+                var offsetHeight = _this.item.contentHeight;
+                if (offsetHeight !== lastOffsetHeight_1) {
+                    for (var _i = 0, _a = _this.gridster.items; _i < _a.length; _i++) {
+                        var item = _a[_i];
                         item.applySize();
                         item.applyPosition();
                     }
                 }
-                lastOffsetHeight = offsetHeight;
+                lastOffsetHeight_1 = offsetHeight;
             });
             observer.observe(this.contentWrapper.nativeElement, {
                 childList: true,
@@ -123,35 +133,31 @@ let GridsterItemComponent = class GridsterItemComponent {
                 characterData: true
             });
         }
-    }
-    ngOnChanges(changes) {
+    };
+    GridsterItemComponent.prototype.ngOnChanges = function (changes) {
+        var _this = this;
         if (!this.gridster.gridList) {
             return;
         }
-        let rerender = false;
-        ['w', ...Object.keys(GridListItem.W_PROPERTY_MAP).map(breakpoint => GridListItem.W_PROPERTY_MAP[breakpoint])]
-            .filter(propName => changes[propName] && !changes[propName].isFirstChange())
-            .forEach((propName) => {
-            if (changes[propName].currentValue > this.options.maxWidth) {
-                this[propName] = this.options.maxWidth;
-                setTimeout(() => this[(propName + 'Change')].emit(this[propName]));
+        var rerender = false;
+        ['w'].concat(Object.keys(GridListItem.W_PROPERTY_MAP).map(function (breakpoint) { return GridListItem.W_PROPERTY_MAP[breakpoint]; })).filter(function (propName) { return changes[propName] && !changes[propName].isFirstChange(); })
+            .forEach(function (propName) {
+            if (changes[propName].currentValue > _this.options.maxWidth) {
+                _this[propName] = _this.options.maxWidth;
+                setTimeout(function () { return _this[(propName + 'Change')].emit(_this[propName]); });
             }
             rerender = true;
         });
-        ['h', ...Object.keys(GridListItem.H_PROPERTY_MAP).map(breakpoint => GridListItem.H_PROPERTY_MAP[breakpoint])]
-            .filter(propName => changes[propName] && !changes[propName].isFirstChange())
-            .forEach((propName) => {
-            if (changes[propName].currentValue > this.options.maxHeight) {
-                this[propName] = this.options.maxHeight;
-                setTimeout(() => this[(propName + 'Change')].emit(this[propName]));
+        ['h'].concat(Object.keys(GridListItem.H_PROPERTY_MAP).map(function (breakpoint) { return GridListItem.H_PROPERTY_MAP[breakpoint]; })).filter(function (propName) { return changes[propName] && !changes[propName].isFirstChange(); })
+            .forEach(function (propName) {
+            if (changes[propName].currentValue > _this.options.maxHeight) {
+                _this[propName] = _this.options.maxHeight;
+                setTimeout(function () { return _this[(propName + 'Change')].emit(_this[propName]); });
             }
             rerender = true;
         });
-        ['x', 'y',
-            ...Object.keys(GridListItem.X_PROPERTY_MAP).map(breakpoint => GridListItem.X_PROPERTY_MAP[breakpoint]),
-            ...Object.keys(GridListItem.Y_PROPERTY_MAP).map(breakpoint => GridListItem.Y_PROPERTY_MAP[breakpoint])]
-            .filter(propName => changes[propName] && !changes[propName].isFirstChange())
-            .forEach((propName) => rerender = true);
+        ['x', 'y'].concat(Object.keys(GridListItem.X_PROPERTY_MAP).map(function (breakpoint) { return GridListItem.X_PROPERTY_MAP[breakpoint]; }), Object.keys(GridListItem.Y_PROPERTY_MAP).map(function (breakpoint) { return GridListItem.Y_PROPERTY_MAP[breakpoint]; })).filter(function (propName) { return changes[propName] && !changes[propName].isFirstChange(); })
+            .forEach(function (propName) { return rerender = true; });
         if (changes['dragAndDrop'] && !changes['dragAndDrop'].isFirstChange()) {
             if (changes['dragAndDrop'].currentValue && this.gridster.options.dragAndDrop) {
                 this.enableDragDrop();
@@ -171,148 +177,151 @@ let GridsterItemComponent = class GridsterItemComponent {
         if (rerender && this.gridster.gridsterComponent.isReady) {
             this.gridster.debounceRenderSubject.next();
         }
-    }
-    ngOnDestroy() {
+    };
+    GridsterItemComponent.prototype.ngOnDestroy = function () {
         this.gridster.removeItem(this.item);
         this.gridster.itemRemoveSubject.next(this.item);
-        this.subscriptions.forEach((sub) => {
+        this.subscriptions.forEach(function (sub) {
             sub.unsubscribe();
         });
         this.disableDraggable();
         this.disableResizable();
-    }
-    updateElemenetPosition() {
+    };
+    GridsterItemComponent.prototype.updateElemenetPosition = function () {
         if (this.gridster.options.useCSSTransforms) {
             utils.setTransform(this.$element, { x: this._positionX, y: this._positionY });
         }
         else {
             utils.setCssElementPosition(this.$element, { x: this._positionX, y: this._positionY });
         }
-    }
-    setPositionsOnItem() {
+    };
+    GridsterItemComponent.prototype.setPositionsOnItem = function () {
+        var _this = this;
         if (!this.item.hasPositions(this.gridster.options.breakpoint)) {
             this.setPositionsForGrid(this.gridster.options);
         }
         this.gridster.gridsterOptions.responsiveOptions
-            .filter((options) => !this.item.hasPositions(options.breakpoint))
-            .forEach((options) => this.setPositionsForGrid(options));
-    }
-    enableResizable() {
+            .filter(function (options) { return !_this.item.hasPositions(options.breakpoint); })
+            .forEach(function (options) { return _this.setPositionsForGrid(options); });
+    };
+    GridsterItemComponent.prototype.enableResizable = function () {
+        var _this = this;
         if (this.resizeSubscriptions.length) {
             return;
         }
-        this.zone.runOutsideAngular(() => {
-            this.getResizeHandlers().forEach((handler) => {
-                const direction = this.getResizeDirection(handler);
-                if (this.hasResizableHandle(direction)) {
+        this.zone.runOutsideAngular(function () {
+            _this.getResizeHandlers().forEach(function (handler) {
+                var direction = _this.getResizeDirection(handler);
+                if (_this.hasResizableHandle(direction)) {
                     handler.style.display = 'block';
                 }
-                const draggable = new Draggable(handler, this.getResizableOptions());
-                let startEvent;
-                let startData;
-                let cursorToElementPosition;
-                const dragStartSub = draggable.dragStart
-                    .subscribe((event) => {
-                    this.zone.run(() => {
-                        this.isResizing = true;
+                var draggable = new Draggable(handler, _this.getResizableOptions());
+                var startEvent;
+                var startData;
+                var cursorToElementPosition;
+                var dragStartSub = draggable.dragStart
+                    .subscribe(function (event) {
+                    _this.zone.run(function () {
+                        _this.isResizing = true;
                         startEvent = event;
-                        startData = this.createResizeStartObject(direction);
-                        cursorToElementPosition = event.getRelativeCoordinates(this.$element);
-                        this.gridster.onResizeStart(this.item);
-                        this.onStart('resize');
+                        startData = _this.createResizeStartObject(direction);
+                        cursorToElementPosition = event.getRelativeCoordinates(_this.$element);
+                        _this.gridster.onResizeStart(_this.item);
+                        _this.onStart('resize');
                     });
                 });
-                const dragSub = draggable.dragMove
-                    .subscribe((event) => {
-                    const scrollData = this.gridster.gridsterScrollData;
-                    this.resizeElement({
-                        direction,
-                        startData,
+                var dragSub = draggable.dragMove
+                    .subscribe(function (event) {
+                    var scrollData = _this.gridster.gridsterScrollData;
+                    _this.resizeElement({
+                        direction: direction,
+                        startData: startData,
                         position: {
-                            x: event.clientX - cursorToElementPosition.x - this.gridster.gridsterRect.left,
-                            y: event.clientY - cursorToElementPosition.y - this.gridster.gridsterRect.top
+                            x: event.clientX - cursorToElementPosition.x - _this.gridster.gridsterRect.left,
+                            y: event.clientY - cursorToElementPosition.y - _this.gridster.gridsterRect.top
                         },
-                        startEvent,
+                        startEvent: startEvent,
                         moveEvent: event,
                         scrollDiffX: scrollData.scrollLeft - startData.scrollLeft,
                         scrollDiffY: scrollData.scrollTop - startData.scrollTop
                     });
-                    this.gridster.onResizeDrag(this.item);
+                    _this.gridster.onResizeDrag(_this.item);
                 });
-                const dragStopSub = draggable.dragStop
-                    .subscribe(() => {
-                    this.zone.run(() => {
-                        this.isResizing = false;
-                        this.gridster.onResizeStop(this.item);
-                        this.onEnd('resize');
+                var dragStopSub = draggable.dragStop
+                    .subscribe(function () {
+                    _this.zone.run(function () {
+                        _this.isResizing = false;
+                        _this.gridster.onResizeStop(_this.item);
+                        _this.onEnd('resize');
                     });
                 });
-                this.resizeSubscriptions = this.resizeSubscriptions.concat([dragStartSub, dragSub, dragStopSub]);
+                _this.resizeSubscriptions = _this.resizeSubscriptions.concat([dragStartSub, dragSub, dragStopSub]);
             });
         });
-    }
-    disableResizable() {
-        this.resizeSubscriptions.forEach((sub) => {
+    };
+    GridsterItemComponent.prototype.disableResizable = function () {
+        this.resizeSubscriptions.forEach(function (sub) {
             sub.unsubscribe();
         });
         this.resizeSubscriptions = [];
-        [].forEach.call(this.$element.querySelectorAll('.gridster-item-resizable-handler'), (handler) => {
+        [].forEach.call(this.$element.querySelectorAll('.gridster-item-resizable-handler'), function (handler) {
             handler.style.display = '';
         });
-    }
-    enableDragDrop() {
+    };
+    GridsterItemComponent.prototype.enableDragDrop = function () {
+        var _this = this;
         if (this.dragSubscriptions.length) {
             return;
         }
-        this.zone.runOutsideAngular(() => {
-            let cursorToElementPosition;
-            const draggable = new Draggable(this.$element, this.getDraggableOptions());
-            const dragStartSub = draggable.dragStart
-                .subscribe((event) => {
-                this.zone.run(() => {
-                    this.gridster.onStart(this.item);
-                    this.isDragging = true;
-                    this.onStart('drag');
-                    cursorToElementPosition = event.getRelativeCoordinates(this.$element);
+        this.zone.runOutsideAngular(function () {
+            var cursorToElementPosition;
+            var draggable = new Draggable(_this.$element, _this.getDraggableOptions());
+            var dragStartSub = draggable.dragStart
+                .subscribe(function (event) {
+                _this.zone.run(function () {
+                    _this.gridster.onStart(_this.item);
+                    _this.isDragging = true;
+                    _this.onStart('drag');
+                    cursorToElementPosition = event.getRelativeCoordinates(_this.$element);
                 });
             });
-            const dragSub = draggable.dragMove
-                .subscribe((event) => {
-                this.positionY = (event.clientY - cursorToElementPosition.y -
-                    this.gridster.gridsterRect.top);
-                this.positionX = (event.clientX - cursorToElementPosition.x -
-                    this.gridster.gridsterRect.left);
-                this.updateElemenetPosition();
-                this.gridster.onDrag(this.item);
+            var dragSub = draggable.dragMove
+                .subscribe(function (event) {
+                _this.positionY = (event.clientY - cursorToElementPosition.y -
+                    _this.gridster.gridsterRect.top);
+                _this.positionX = (event.clientX - cursorToElementPosition.x -
+                    _this.gridster.gridsterRect.left);
+                _this.updateElemenetPosition();
+                _this.gridster.onDrag(_this.item);
             });
-            const dragStopSub = draggable.dragStop
-                .subscribe(() => {
-                this.zone.run(() => {
-                    this.gridster.onStop(this.item);
-                    this.gridster.debounceRenderSubject.next();
-                    this.isDragging = false;
-                    this.onEnd('drag');
+            var dragStopSub = draggable.dragStop
+                .subscribe(function () {
+                _this.zone.run(function () {
+                    _this.gridster.onStop(_this.item);
+                    _this.gridster.debounceRenderSubject.next();
+                    _this.isDragging = false;
+                    _this.onEnd('drag');
                 });
             });
-            this.dragSubscriptions = this.dragSubscriptions.concat([dragStartSub, dragSub, dragStopSub]);
+            _this.dragSubscriptions = _this.dragSubscriptions.concat([dragStartSub, dragSub, dragStopSub]);
         });
-    }
-    disableDraggable() {
-        this.dragSubscriptions.forEach((sub) => {
+    };
+    GridsterItemComponent.prototype.disableDraggable = function () {
+        this.dragSubscriptions.forEach(function (sub) {
             sub.unsubscribe();
         });
         this.dragSubscriptions = [];
-    }
-    getResizeHandlers() {
-        return [].filter.call(this.$element.children[0].children, (el) => {
+    };
+    GridsterItemComponent.prototype.getResizeHandlers = function () {
+        return [].filter.call(this.$element.children[0].children, function (el) {
             return el.classList.contains('gridster-item-resizable-handler');
         });
-    }
-    getDraggableOptions() {
-        return Object.assign({ scrollDirection: this.gridster.options.direction }, this.gridster.draggableOptions);
-    }
-    getResizableOptions() {
-        const resizableOptions = {};
+    };
+    GridsterItemComponent.prototype.getDraggableOptions = function () {
+        return tslib_1.__assign({ scrollDirection: this.gridster.options.direction }, this.gridster.draggableOptions);
+    };
+    GridsterItemComponent.prototype.getResizableOptions = function () {
+        var resizableOptions = {};
         if (this.gridster.draggableOptions.scroll || this.gridster.draggableOptions.scroll === false) {
             resizableOptions.scroll = this.gridster.draggableOptions.scroll;
         }
@@ -321,30 +330,31 @@ let GridsterItemComponent = class GridsterItemComponent {
         }
         resizableOptions.scrollDirection = this.gridster.options.direction;
         return resizableOptions;
-    }
-    hasResizableHandle(direction) {
-        const isItemResizable = this.gridster.options.resizable && this.item.resizable;
-        const resizeHandles = this.gridster.options.resizeHandles;
+    };
+    GridsterItemComponent.prototype.hasResizableHandle = function (direction) {
+        var isItemResizable = this.gridster.options.resizable && this.item.resizable;
+        var resizeHandles = this.gridster.options.resizeHandles;
         return isItemResizable && (!resizeHandles || (resizeHandles && !!resizeHandles[direction]));
-    }
-    setPositionsForGrid(options) {
-        let x, y;
-        const position = this.findPosition(options);
+    };
+    GridsterItemComponent.prototype.setPositionsForGrid = function (options) {
+        var _this = this;
+        var x, y;
+        var position = this.findPosition(options);
         x = options.direction === 'horizontal' ? position[0] : position[1];
         y = options.direction === 'horizontal' ? position[1] : position[0];
         this.item.setValueX(x, options.breakpoint);
         this.item.setValueY(y, options.breakpoint);
-        setTimeout(() => {
-            this.item.triggerChangeX(options.breakpoint);
-            this.item.triggerChangeY(options.breakpoint);
+        setTimeout(function () {
+            _this.item.triggerChangeX(options.breakpoint);
+            _this.item.triggerChangeY(options.breakpoint);
         });
-    }
-    findPosition(options) {
-        const gridList = new GridList(this.gridster.items.map(item => item.copyForBreakpoint(options.breakpoint)), options);
+    };
+    GridsterItemComponent.prototype.findPosition = function (options) {
+        var gridList = new GridList(this.gridster.items.map(function (item) { return item.copyForBreakpoint(options.breakpoint); }), options);
         return gridList.findPositionForItem(this.item, { x: 0, y: 0 });
-    }
-    createResizeStartObject(direction) {
-        const scrollData = this.gridster.gridsterScrollData;
+    };
+    GridsterItemComponent.prototype.createResizeStartObject = function (direction) {
+        var scrollData = this.gridster.gridsterScrollData;
         return {
             top: this.positionY,
             left: this.positionX,
@@ -365,31 +375,32 @@ let GridsterItemComponent = class GridsterItemComponent {
             scrollLeft: scrollData.scrollLeft,
             scrollTop: scrollData.scrollTop
         };
-    }
-    onEnd(actionType) {
+    };
+    GridsterItemComponent.prototype.onEnd = function (actionType) {
         this.end.emit({ action: actionType, item: this.item });
-    }
-    onStart(actionType) {
+    };
+    GridsterItemComponent.prototype.onStart = function (actionType) {
         this.start.emit({ action: actionType, item: this.item });
-    }
+    };
     /**
      * Assign class for short while to prevent animation of grid item component
      */
-    preventAnimation() {
+    GridsterItemComponent.prototype.preventAnimation = function () {
+        var _this = this;
         this.$element.classList.add('no-transition');
-        setTimeout(() => {
-            this.$element.classList.remove('no-transition');
+        setTimeout(function () {
+            _this.$element.classList.remove('no-transition');
         }, 500);
         return this;
-    }
-    getResizeDirection(handler) {
-        for (let i = handler.classList.length - 1; i >= 0; i--) {
+    };
+    GridsterItemComponent.prototype.getResizeDirection = function (handler) {
+        for (var i = handler.classList.length - 1; i >= 0; i--) {
             if (handler.classList[i].match('handle-')) {
                 return handler.classList[i].split('-')[1];
             }
         }
-    }
-    resizeElement(config) {
+    };
+    GridsterItemComponent.prototype.resizeElement = function (config) {
         // north
         if (config.direction.indexOf('n') >= 0) {
             this.resizeToNorth(config);
@@ -406,9 +417,9 @@ let GridsterItemComponent = class GridsterItemComponent {
         if (config.direction.indexOf('s') >= 0) {
             this.resizeToSouth(config);
         }
-    }
-    resizeToNorth(config) {
-        const height = config.startData.height + config.startEvent.clientY -
+    };
+    GridsterItemComponent.prototype.resizeToNorth = function (config) {
+        var height = config.startData.height + config.startEvent.clientY -
             config.moveEvent.clientY - config.scrollDiffY;
         if (height < (config.startData.minH * this.gridster.cellHeight)) {
             this.setMinHeight('n', config);
@@ -420,9 +431,9 @@ let GridsterItemComponent = class GridsterItemComponent {
             this.positionY = config.position.y;
             this.$element.style.height = height + 'px';
         }
-    }
-    resizeToWest(config) {
-        const width = config.startData.width + config.startEvent.clientX -
+    };
+    GridsterItemComponent.prototype.resizeToWest = function (config) {
+        var width = config.startData.width + config.startEvent.clientX -
             config.moveEvent.clientX - config.scrollDiffX;
         if (width < (config.startData.minW * this.gridster.cellWidth)) {
             this.setMinWidth('w', config);
@@ -435,9 +446,9 @@ let GridsterItemComponent = class GridsterItemComponent {
             this.updateElemenetPosition();
             this.$element.style.width = width + 'px';
         }
-    }
-    resizeToEast(config) {
-        const width = config.startData.width + config.moveEvent.clientX -
+    };
+    GridsterItemComponent.prototype.resizeToEast = function (config) {
+        var width = config.startData.width + config.moveEvent.clientX -
             config.startEvent.clientX + config.scrollDiffX;
         if (width > (config.startData.maxW * this.gridster.cellWidth)) {
             this.setMaxWidth('e', config);
@@ -448,9 +459,9 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.width = width + 'px';
         }
-    }
-    resizeToSouth(config) {
-        const height = config.startData.height + config.moveEvent.clientY -
+    };
+    GridsterItemComponent.prototype.resizeToSouth = function (config) {
+        var height = config.startData.height + config.moveEvent.clientY -
             config.startEvent.clientY + config.scrollDiffY;
         if (height > config.startData.maxH * this.gridster.cellHeight) {
             this.setMaxHeight('s', config);
@@ -461,8 +472,8 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.height = height + 'px';
         }
-    }
-    setMinHeight(direction, config) {
+    };
+    GridsterItemComponent.prototype.setMinHeight = function (direction, config) {
         if (direction === 'n') {
             this.$element.style.height = (config.startData.minH * this.gridster.cellHeight) + 'px';
             this.positionY = config.startData.maxY * this.gridster.cellHeight;
@@ -470,8 +481,8 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.height = (config.startData.minH * this.gridster.cellHeight) + 'px';
         }
-    }
-    setMinWidth(direction, config) {
+    };
+    GridsterItemComponent.prototype.setMinWidth = function (direction, config) {
         if (direction === 'w') {
             this.$element.style.width = (config.startData.minW * this.gridster.cellWidth) + 'px';
             this.positionX = config.startData.maxX * this.gridster.cellWidth;
@@ -480,8 +491,8 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.width = (config.startData.minW * this.gridster.cellWidth) + 'px';
         }
-    }
-    setMaxHeight(direction, config) {
+    };
+    GridsterItemComponent.prototype.setMaxHeight = function (direction, config) {
         if (direction === 'n') {
             this.$element.style.height = (config.startData.maxH * this.gridster.cellHeight) + 'px';
             this.positionY = config.startData.minY * this.gridster.cellHeight;
@@ -489,8 +500,8 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.height = (config.startData.maxH * this.gridster.cellHeight) + 'px';
         }
-    }
-    setMaxWidth(direction, config) {
+    };
+    GridsterItemComponent.prototype.setMaxWidth = function (direction, config) {
         if (direction === 'w') {
             this.$element.style.width = (config.startData.maxW * this.gridster.cellWidth) + 'px';
             this.positionX = config.startData.minX * this.gridster.cellWidth;
@@ -499,340 +510,222 @@ let GridsterItemComponent = class GridsterItemComponent {
         else {
             this.$element.style.width = (config.startData.maxW * this.gridster.cellWidth) + 'px';
         }
-    }
-};
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "x", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "xChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "y", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "yChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "xSm", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "xSmChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "ySm", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "ySmChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "xMd", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "xMdChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "yMd", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "yMdChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "xLg", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "xLgChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "yLg", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "yLgChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "xXl", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "xXlChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "yXl", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "yXlChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "w", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "wChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "h", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "hChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "wSm", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "wSmChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "hSm", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "hSmChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "wMd", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "wMdChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "hMd", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "hMdChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "wLg", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "wLgChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "hLg", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "hLgChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "wXl", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "wXlChange", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Number)
-], GridsterItemComponent.prototype, "hXl", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "hXlChange", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "change", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "start", void 0);
-tslib_1.__decorate([
-    Output(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "end", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "dragAndDrop", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "resizable", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "options", void 0);
-tslib_1.__decorate([
-    Input(),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "variableHeight", void 0);
-tslib_1.__decorate([
-    ViewChild('contentWrapper'),
-    tslib_1.__metadata("design:type", ElementRef)
-], GridsterItemComponent.prototype, "contentWrapper", void 0);
-tslib_1.__decorate([
-    HostBinding('class.is-dragging'),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "isDragging", void 0);
-tslib_1.__decorate([
-    HostBinding('class.is-resizing'),
-    tslib_1.__metadata("design:type", Object)
-], GridsterItemComponent.prototype, "isResizing", void 0);
-GridsterItemComponent = tslib_1.__decorate([
-    Component({
-        selector: 'ngx-gridster-item',
-        template: `<div class="gridster-item-inner" [ngStyle]="{position: variableHeight ? 'relative' : ''}">
-      <span #contentWrapper class="gridster-content-wrapper">
-        <ng-content></ng-content>
-      </span>
-      <div class="gridster-item-resizable-handler handle-s"></div>
-      <div class="gridster-item-resizable-handler handle-e"></div>
-      <div class="gridster-item-resizable-handler handle-n"></div>
-      <div class="gridster-item-resizable-handler handle-w"></div>
-      <div class="gridster-item-resizable-handler handle-se"></div>
-      <div class="gridster-item-resizable-handler handle-ne"></div>
-      <div class="gridster-item-resizable-handler handle-sw"></div>
-      <div class="gridster-item-resizable-handler handle-nw"></div>
-    </div>`,
-        styles: [`
-    ngx-gridster-item {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        -webkit-transition: none;
-        transition: none;
-    }
-
-    .gridster--ready ngx-gridster-item {
-        transition: all 200ms ease;
-        transition-property: left, top;
-    }
-
-    .gridster--ready.css-transform ngx-gridster-item  {
-        transition-property: transform;
-    }
-
-    .gridster--ready ngx-gridster-item.is-dragging,
-    .gridster--ready ngx-gridster-item.is-resizing {
-        -webkit-transition: none;
-        transition: none;
-        z-index: 9999;
-    }
-
-    ngx-gridster-item.no-transition {
-        -webkit-transition: none;
-        transition: none;
-    }
-    ngx-gridster-item .gridster-item-resizable-handler {
-        position: absolute;
-        z-index: 2;
-        display: none;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-n {
-      cursor: n-resize;
-      height: 10px;
-      right: 0;
-      top: 0;
-      left: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-e {
-      cursor: e-resize;
-      width: 10px;
-      bottom: 0;
-      right: 0;
-      top: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-s {
-      cursor: s-resize;
-      height: 10px;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-w {
-      cursor: w-resize;
-      width: 10px;
-      left: 0;
-      top: 0;
-      bottom: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-ne {
-      cursor: ne-resize;
-      width: 10px;
-      height: 10px;
-      right: 0;
-      top: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-nw {
-      cursor: nw-resize;
-      width: 10px;
-      height: 10px;
-      left: 0;
-      top: 0;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-se {
-      cursor: se-resize;
-      width: 0;
-      height: 0;
-      right: 0;
-      bottom: 0;
-      border-style: solid;
-      border-width: 0 0 10px 10px;
-      border-color: transparent;
-    }
-
-    ngx-gridster-item .gridster-item-resizable-handler.handle-sw {
-      cursor: sw-resize;
-      width: 10px;
-      height: 10px;
-      left: 0;
-      bottom: 0;
-    }
-
-    ngx-gridster-item:hover .gridster-item-resizable-handler.handle-se {
-      border-color: transparent transparent #ccc
-    }
-    `],
-        changeDetection: ChangeDetectionStrategy.OnPush,
-        encapsulation: ViewEncapsulation.None
-    }),
-    tslib_1.__param(1, Inject(ElementRef)),
-    tslib_1.__param(2, Inject(GridsterService)),
-    tslib_1.__metadata("design:paramtypes", [NgZone,
-        ElementRef,
-        GridsterService])
-], GridsterItemComponent);
+    };
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "x", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "xChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "y", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "yChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "xSm", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "xSmChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "ySm", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "ySmChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "xMd", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "xMdChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "yMd", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "yMdChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "xLg", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "xLgChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "yLg", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "yLgChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "xXl", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "xXlChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "yXl", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "yXlChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "w", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "wChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "h", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "hChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "wSm", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "wSmChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "hSm", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "hSmChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "wMd", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "wMdChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "hMd", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "hMdChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "wLg", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "wLgChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "hLg", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "hLgChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "wXl", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "wXlChange", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Number)
+    ], GridsterItemComponent.prototype, "hXl", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "hXlChange", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "change", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "start", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "end", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "dragAndDrop", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "resizable", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "options", void 0);
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "variableHeight", void 0);
+    tslib_1.__decorate([
+        ViewChild('contentWrapper'),
+        tslib_1.__metadata("design:type", ElementRef)
+    ], GridsterItemComponent.prototype, "contentWrapper", void 0);
+    tslib_1.__decorate([
+        HostBinding('class.is-dragging'),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "isDragging", void 0);
+    tslib_1.__decorate([
+        HostBinding('class.is-resizing'),
+        tslib_1.__metadata("design:type", Object)
+    ], GridsterItemComponent.prototype, "isResizing", void 0);
+    GridsterItemComponent = tslib_1.__decorate([
+        Component({
+            selector: 'ngx-gridster-item',
+            template: "<div class=\"gridster-item-inner\" [ngStyle]=\"{position: variableHeight ? 'relative' : ''}\">\n      <span #contentWrapper class=\"gridster-content-wrapper\">\n        <ng-content></ng-content>\n      </span>\n      <div class=\"gridster-item-resizable-handler handle-s\"></div>\n      <div class=\"gridster-item-resizable-handler handle-e\"></div>\n      <div class=\"gridster-item-resizable-handler handle-n\"></div>\n      <div class=\"gridster-item-resizable-handler handle-w\"></div>\n      <div class=\"gridster-item-resizable-handler handle-se\"></div>\n      <div class=\"gridster-item-resizable-handler handle-ne\"></div>\n      <div class=\"gridster-item-resizable-handler handle-sw\"></div>\n      <div class=\"gridster-item-resizable-handler handle-nw\"></div>\n    </div>",
+            styles: ["\n    ngx-gridster-item {\n        display: block;\n        position: absolute;\n        top: 0;\n        left: 0;\n        z-index: 1;\n        -webkit-transition: none;\n        transition: none;\n    }\n\n    .gridster--ready ngx-gridster-item {\n        transition: all 200ms ease;\n        transition-property: left, top;\n    }\n\n    .gridster--ready.css-transform ngx-gridster-item  {\n        transition-property: transform;\n    }\n\n    .gridster--ready ngx-gridster-item.is-dragging,\n    .gridster--ready ngx-gridster-item.is-resizing {\n        -webkit-transition: none;\n        transition: none;\n        z-index: 9999;\n    }\n\n    ngx-gridster-item.no-transition {\n        -webkit-transition: none;\n        transition: none;\n    }\n    ngx-gridster-item .gridster-item-resizable-handler {\n        position: absolute;\n        z-index: 2;\n        display: none;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-n {\n      cursor: n-resize;\n      height: 10px;\n      right: 0;\n      top: 0;\n      left: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-e {\n      cursor: e-resize;\n      width: 10px;\n      bottom: 0;\n      right: 0;\n      top: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-s {\n      cursor: s-resize;\n      height: 10px;\n      right: 0;\n      bottom: 0;\n      left: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-w {\n      cursor: w-resize;\n      width: 10px;\n      left: 0;\n      top: 0;\n      bottom: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-ne {\n      cursor: ne-resize;\n      width: 10px;\n      height: 10px;\n      right: 0;\n      top: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-nw {\n      cursor: nw-resize;\n      width: 10px;\n      height: 10px;\n      left: 0;\n      top: 0;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-se {\n      cursor: se-resize;\n      width: 0;\n      height: 0;\n      right: 0;\n      bottom: 0;\n      border-style: solid;\n      border-width: 0 0 10px 10px;\n      border-color: transparent;\n    }\n\n    ngx-gridster-item .gridster-item-resizable-handler.handle-sw {\n      cursor: sw-resize;\n      width: 10px;\n      height: 10px;\n      left: 0;\n      bottom: 0;\n    }\n\n    ngx-gridster-item:hover .gridster-item-resizable-handler.handle-se {\n      border-color: transparent transparent #ccc\n    }\n    "],
+            changeDetection: ChangeDetectionStrategy.OnPush,
+            encapsulation: ViewEncapsulation.None
+        }),
+        tslib_1.__param(1, Inject(ElementRef)),
+        tslib_1.__param(2, Inject(GridsterService)),
+        tslib_1.__metadata("design:paramtypes", [NgZone,
+            ElementRef,
+            GridsterService])
+    ], GridsterItemComponent);
+    return GridsterItemComponent;
+}());
 export { GridsterItemComponent };
 //# sourceMappingURL=gridster-item.component.js.map

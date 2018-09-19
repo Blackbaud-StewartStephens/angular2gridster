@@ -1,8 +1,8 @@
 import * as tslib_1 from "tslib";
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { GridsterComponent } from './angular2gridster/gridster.component';
-let AppComponent = AppComponent_1 = class AppComponent {
-    constructor() {
+var AppComponent = /** @class */ (function () {
+    function AppComponent() {
         this.itemOptions = {
             maxWidth: 3,
             maxHeight: 4
@@ -132,24 +132,25 @@ let AppComponent = AppComponent_1 = class AppComponent {
             }
         ];
     }
-    ngOnInit() {
-        this.widgetsCopy = this.widgets.map(widget => (Object.assign({}, widget)));
-    }
-    onReflow(event) {
+    AppComponent_1 = AppComponent;
+    AppComponent.prototype.ngOnInit = function () {
+        this.widgetsCopy = this.widgets.map(function (widget) { return (tslib_1.__assign({}, widget)); });
+    };
+    AppComponent.prototype.onReflow = function (event) {
         console.log('onReflow', event);
-    }
-    removeLine(gridster) {
+    };
+    AppComponent.prototype.removeLine = function (gridster) {
         gridster.setOption('lanes', --this.gridsterOptions.lanes)
             .reload();
-    }
-    getTitle() {
+    };
+    AppComponent.prototype.getTitle = function () {
         return this.title;
-    }
-    addLine(gridster) {
+    };
+    AppComponent.prototype.addLine = function (gridster) {
         gridster.setOption('lanes', ++this.gridsterOptions.lanes)
             .reload();
-    }
-    setWidth(widget, size, e, gridster) {
+    };
+    AppComponent.prototype.setWidth = function (widget, size, e, gridster) {
         e.stopPropagation();
         e.preventDefault();
         if (size < 1) {
@@ -158,8 +159,8 @@ let AppComponent = AppComponent_1 = class AppComponent {
         widget.w = size;
         gridster.reload();
         return false;
-    }
-    setHeight(widget, size, e, gridster) {
+    };
+    AppComponent.prototype.setHeight = function (widget, size, e, gridster) {
         e.stopPropagation();
         e.preventDefault();
         if (size < 1) {
@@ -168,19 +169,19 @@ let AppComponent = AppComponent_1 = class AppComponent {
         widget.h = size;
         gridster.reload();
         return false;
-    }
-    optionsChange(options) {
+    };
+    AppComponent.prototype.optionsChange = function (options) {
         this.gridsterOptions = options;
         console.log('options change:', options);
-    }
-    swap() {
+    };
+    AppComponent.prototype.swap = function () {
         this.widgets[0].x = 3;
         this.widgets[3].x = 0;
-    }
-    addWidgetFromDrag(gridster, event) {
-        const item = event.item;
-        const breakpoint = gridster.options.breakpoint;
-        const widget = {
+    };
+    AppComponent.prototype.addWidgetFromDrag = function (gridster, event) {
+        var item = event.item;
+        var breakpoint = gridster.options.breakpoint;
+        var widget = {
             dragAndDrop: true,
             resizable: true,
             title: 'New widget'
@@ -189,26 +190,27 @@ let AppComponent = AppComponent_1 = class AppComponent {
         widget[AppComponent_1.H_PROPERTY_MAP[breakpoint] || 'h'] = item.h;
         widget[AppComponent_1.X_PROPERTY_MAP[breakpoint] || 'x'] = item.x;
         widget[AppComponent_1.Y_PROPERTY_MAP[breakpoint] || 'y'] = item.y;
-        for (const rwdProp of ['wSm', 'hSm', 'wMd', 'hMd', 'wLg', 'hLg', 'wXl', 'hXl']) {
+        for (var _i = 0, _a = ['wSm', 'hSm', 'wMd', 'hMd', 'wLg', 'hLg', 'wXl', 'hXl']; _i < _a.length; _i++) {
+            var rwdProp = _a[_i];
             if (event.item.itemPrototype.hasOwnProperty(rwdProp)) {
                 widget[rwdProp] = event.item.itemPrototype[rwdProp];
             }
         }
         this.widgets.push(widget);
         console.log('add widget from drag to:', gridster);
-    }
-    over(event) {
-        const size = event.item.calculateSize(event.gridster);
+    };
+    AppComponent.prototype.over = function (event) {
+        var size = event.item.calculateSize(event.gridster);
         event.item.itemPrototype.$element.querySelector('.gridster-item-inner').style.width = size.width + 'px';
         event.item.itemPrototype.$element.querySelector('.gridster-item-inner').style.height = size.height + 'px';
         event.item.itemPrototype.$element.classList.add('is-over');
-    }
-    out(event) {
+    };
+    AppComponent.prototype.out = function (event) {
         event.item.itemPrototype.$element.querySelector('.gridster-item-inner').style.width = '';
         event.item.itemPrototype.$element.querySelector('.gridster-item-inner').style.height = '';
         event.item.itemPrototype.$element.classList.remove('is-over');
-    }
-    addWidgetWithoutData() {
+    };
+    AppComponent.prototype.addWidgetWithoutData = function () {
         this.widgets.push({
             title: 'Basic form inputs X',
             dragAndDrop: true,
@@ -219,8 +221,8 @@ let AppComponent = AppComponent_1 = class AppComponent {
                 'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
                 'laborum.'
         });
-    }
-    addWidget(gridster) {
+    };
+    AppComponent.prototype.addWidget = function (gridster) {
         this.widgets.push({
             x: 4, y: 0, w: 1, h: 1,
             dragAndDrop: true,
@@ -233,58 +235,59 @@ let AppComponent = AppComponent_1 = class AppComponent {
                 'laborum.'
         });
         console.log('widget push', this.widgets[this.widgets.length - 1]);
-    }
-    remove($event, index, gridster) {
+    };
+    AppComponent.prototype.remove = function ($event, index, gridster) {
         $event.preventDefault();
         this.widgets.splice(index, 1);
         console.log('widget remove', index);
-    }
-    removeAllWidgets() {
+    };
+    AppComponent.prototype.removeAllWidgets = function () {
         this.widgets = [];
-    }
-    itemChange($event, gridster) {
+    };
+    AppComponent.prototype.itemChange = function ($event, gridster) {
         console.log('item change', $event);
-    }
-    resetWidgets() {
-        this.widgets = this.widgetsCopy.map(widget => (Object.assign({}, widget)));
-    }
-};
-AppComponent.X_PROPERTY_MAP = {
-    sm: 'xSm',
-    md: 'xMd',
-    lg: 'xLg',
-    xl: 'xXl'
-};
-AppComponent.Y_PROPERTY_MAP = {
-    sm: 'ySm',
-    md: 'yMd',
-    lg: 'yLg',
-    xl: 'yXl'
-};
-AppComponent.W_PROPERTY_MAP = {
-    sm: 'wSm',
-    md: 'wMd',
-    lg: 'wLg',
-    xl: 'wXl'
-};
-AppComponent.H_PROPERTY_MAP = {
-    sm: 'hSm',
-    md: 'hMd',
-    lg: 'hLg',
-    xl: 'hXl'
-};
-tslib_1.__decorate([
-    ViewChild(GridsterComponent),
-    tslib_1.__metadata("design:type", GridsterComponent)
-], AppComponent.prototype, "gridster", void 0);
-AppComponent = AppComponent_1 = tslib_1.__decorate([
-    Component({
-        selector: 'demo-root',
-        templateUrl: './app.component.html',
-        styleUrls: ['./app.component.css'],
-        encapsulation: ViewEncapsulation.None
-    })
-], AppComponent);
+    };
+    AppComponent.prototype.resetWidgets = function () {
+        this.widgets = this.widgetsCopy.map(function (widget) { return (tslib_1.__assign({}, widget)); });
+    };
+    AppComponent.X_PROPERTY_MAP = {
+        sm: 'xSm',
+        md: 'xMd',
+        lg: 'xLg',
+        xl: 'xXl'
+    };
+    AppComponent.Y_PROPERTY_MAP = {
+        sm: 'ySm',
+        md: 'yMd',
+        lg: 'yLg',
+        xl: 'yXl'
+    };
+    AppComponent.W_PROPERTY_MAP = {
+        sm: 'wSm',
+        md: 'wMd',
+        lg: 'wLg',
+        xl: 'wXl'
+    };
+    AppComponent.H_PROPERTY_MAP = {
+        sm: 'hSm',
+        md: 'hMd',
+        lg: 'hLg',
+        xl: 'hXl'
+    };
+    tslib_1.__decorate([
+        ViewChild(GridsterComponent),
+        tslib_1.__metadata("design:type", GridsterComponent)
+    ], AppComponent.prototype, "gridster", void 0);
+    AppComponent = AppComponent_1 = tslib_1.__decorate([
+        Component({
+            selector: 'demo-root',
+            templateUrl: './app.component.html',
+            styleUrls: ['./app.component.css'],
+            encapsulation: ViewEncapsulation.None
+        })
+    ], AppComponent);
+    return AppComponent;
+    var AppComponent_1;
+}());
 export { AppComponent };
-var AppComponent_1;
 //# sourceMappingURL=app.component.js.map
