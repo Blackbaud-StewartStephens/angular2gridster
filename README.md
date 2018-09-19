@@ -188,3 +188,13 @@ I look forward to get a response from you.
 ## Origin
 
 This project was created on idea of [GridList](https://github.com/hootsuite/grid). Great alternative for Gridster.
+
+## Compilation to precompiled repository
+
+In order to compile this for use in skyux-lib-reporting-dashboard-editor, follow these steps:
+
+1. `cd` to `out-tsc\lib\projects\angular2gridster\src` and do a `git pull` to ensure the submodule is at latest.
+2. `cd` back to root and run `.\node_modules\.bin\tsc --project .\projects\angular2gridster\tsconfig.lib.json`.
+3. The generated *.d.ts files in `out-tsc` are missing the decorators (e.g. `@NgModule`, `@NgClass`, `@Input`) which need to be manually re-added.
+4. `cd` to `out-tsc\lib\projects\angular2gridster\src`, commit and push the changes to the angular2gridster-precompiled repo.
+5. `cd` back to root and commit and push changes to the angular2gridster repo.
