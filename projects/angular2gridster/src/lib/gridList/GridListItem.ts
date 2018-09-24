@@ -131,7 +131,13 @@ export class GridListItem {
     }
 
     get contentHeight(): number {
-        const contentHeight = this.itemComponent.contentWrapper.nativeElement.offsetheight || 0;
+        // itemComponent is undefined when dragging a prototype
+        let contentHeight: number;
+        if (this.itemComponent) {
+            contentHeight = this.itemComponent.contentWrapper.nativeElement.offsetheight || 0;
+        } else {
+            contentHeight = 0;
+        }
         const childHeight = this.$element.firstChild.offsetHeight || 0;
         return Math.max(contentHeight, childHeight);
     }
