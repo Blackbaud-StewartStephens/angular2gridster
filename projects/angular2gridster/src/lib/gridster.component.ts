@@ -143,6 +143,15 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
                 )
             );
         });
+        const scrollableContainer = utils.getScrollableContainer(this.$element);
+        if (scrollableContainer) {
+            this.subscription.add(
+                fromEvent(scrollableContainer, 'scroll', { passive: true })
+                .subscribe(() =>
+                    this.updateGridsterElementData()
+                )
+            );
+        }
     }
 
     ngAfterContentInit() {

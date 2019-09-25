@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.2"></a>
+## [7.0.2](https://github.com/swiety85/angular2gridster/compare/v7.0.1...v7.0.2) (2019-01-26)
+
+
+### Bug Fixes
+
+* **demo:** demo not scrollable content ([1fb0cd4](https://github.com/swiety85/angular2gridster/commit/1fb0cd4))
+* **drag:** fix drag mouse position in scrollabe container ([d044b54](https://github.com/swiety85/angular2gridster/commit/d044b54))
+
+
+
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/swiety85/angular2gridster/compare/v7.0.0...v7.0.1) (2018-11-06)
+
+
+### Bug Fixes
+
+* **build:** fix peerDependencies ([d9f6f02](https://github.com/swiety85/angular2gridster/commit/d9f6f02))
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/swiety85/angular2gridster/compare/v6.0.4...v7.0.0) (2018-11-04)
 
