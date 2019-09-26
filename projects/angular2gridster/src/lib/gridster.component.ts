@@ -1,8 +1,24 @@
 import {
-    Component, OnInit, AfterContentInit, OnDestroy, ElementRef, ViewChild, NgZone,
-    Input, Output, EventEmitter, ChangeDetectionStrategy, HostBinding, ViewEncapsulation
+    Component,
+    OnInit,
+    AfterContentInit,
+    OnDestroy,
+    ElementRef,
+    ViewChild,
+    NgZone,
+    Input,
+    Output,
+    EventEmitter,
+    ChangeDetectionStrategy,
+    HostBinding,
+    ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subscription, ConnectableObservable } from 'rxjs';
+import {
+    Observable,
+    Subscription,
+    fromEvent,
+    ConnectableObservable
+} from 'rxjs';
 import { debounceTime, filter, publish } from 'rxjs/operators';
 
 import { utils } from './utils/utils';
@@ -14,7 +30,6 @@ import { GridsterItemPrototypeDirective } from './gridster-prototype/gridster-it
 import { GridListItem } from './gridList/GridListItem';
 import { GridsterOptions } from './GridsterOptions';
 
-
 @Component({
     selector: 'ngx-gridster',
     template: `<div class="gridster-container">
@@ -24,29 +39,30 @@ import { GridsterOptions } from './GridsterOptions';
         <div class="inner"></div>
       </div>
     </div>`,
-    styles: [`
-    ngx-gridster {
-        position: relative;
-        display: block;
-        left: 0;
-        width: 100%;
-    }
+    styles: [
+        `
+            ngx-gridster {
+                position: relative;
+                display: block;
+                left: 0;
+                width: 100%;
+            }
 
-    ngx-gridster.gridster--dragging {
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+            ngx-gridster.gridster--dragging {
+                -moz-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
 
-    ngx-gridster .gridster-container {
-        position: relative;
-        width: 100%;
-        list-style: none;
-        -webkit-transition: width 0.2s, height 0.2s;
-        transition: width 0.2s, height 0.2s;
-    }
+            ngx-gridster .gridster-container {
+                position: relative;
+                width: 100%;
+                list-style: none;
+                -webkit-transition: width 0.2s, height 0.2s;
+                transition: width 0.2s, height 0.2s;
+            }
 
     ngx-gridster .position-highlight {
         display: block;
@@ -90,10 +106,12 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
     private isDisabled = false;
     private subscription = new Subscription();
 
-    constructor(private zone: NgZone,
-                elementRef: ElementRef, gridster: GridsterService,
-                private gridsterPrototype: GridsterPrototypeService) {
-
+    constructor(
+        private zone: NgZone,
+        elementRef: ElementRef,
+        gridster: GridsterService,
+        private gridsterPrototype: GridsterPrototypeService
+    ) {
         this.gridster = gridster;
         this.$element = elementRef.nativeElement;
     }
@@ -118,17 +136,30 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
         this.gridster.init(this);
 
         this.subscription.add(
-            Observable.fromEvent(window, 'resize').pipe(
-                debounceTime(this.gridster.options.responsiveDebounce || 0),
-                filter(() => this.gridster.options.responsiveView)
-            ).subscribe(() => this.reload())
+            fromEvent(window, 'resize')
+                .pipe(
+                    debounceTime(this.gridster.options.responsiveDebounce || 0),
+                    filter(() => this.gridster.options.responsiveView)
+                )
+                .subscribe(() => this.reload())
         );
 
         this.zone.runOutsideAngular(() => {
             this.subscription.add(
-                Observable.fromEvent(document, 'scroll', { passive: true }).subscribe(() => this.updateGridsterElementData())
+                fromEvent(document, 'scroll', { passive: true }).subscribe(() =>
+                    this.updateGridsterElementData()
+                )
             );
         });
+        const scrollableContainer = utils.getScrollableContainer(this.$element);
+        if (scrollableContainer) {
+            this.subscription.add(
+                fromEvent(scrollableContainer, 'scroll', { passive: true })
+                .subscribe(() =>
+                    this.updateGridsterElementData()
+                )
+            );
+        }
     }
 
     ngAfterContentInit() {
@@ -205,22 +236,31 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
     }
 
     updateGridsterElementData() {
-        this.gridster.gridsterScrollData = this.getScrollPositionFromParents(this.$element);
+        this.gridster.gridsterScrollData = this.getScrollPositionFromParents(
+            this.$element
+        );
         this.gridster.gridsterRect = this.$element.getBoundingClientRect();
     }
 
     setReady() {
-        setTimeout(() => this.isReady = true);
+        setTimeout(() => (this.isReady = true));
         this.ready.emit();
     }
 
-    adjustItemsHeightToContent(scrollableItemElementSelector: string = '.gridster-item-inner') {
+    adjustItemsHeightToContent(
+        scrollableItemElementSelector: string = '.gridster-item-inner'
+    ) {
         this.gridster.items
             // convert each item to object with information about content height and scroll height
             .map((item: GridListItem) => {
-                const scrollEl = item.$element.querySelector(scrollableItemElementSelector);
+                const scrollEl = item.$element.querySelector(
+                    scrollableItemElementSelector
+                );
                 const contentEl = scrollEl.lastElementChild;
-                const scrollElDistance = utils.getRelativeCoordinates(scrollEl, item.$element);
+                const scrollElDistance = utils.getRelativeCoordinates(
+                    scrollEl,
+                    item.$element
+                );
                 const scrollElRect = scrollEl.getBoundingClientRect();
                 const contentRect = contentEl.getBoundingClientRect();
 
@@ -231,10 +271,11 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
                 };
             })
             // calculate required height in lanes amount and update item "h"
-            .forEach((data) => {
-                data.item.h = Math.ceil(
-                    <any>((data.contentHeight) / (this.gridster.cellHeight - data.scrollElDistance.top))
-                );
+            .forEach(data => {
+                data.item.h = Math.ceil(<any>(
+                    (data.contentHeight /
+                        (this.gridster.cellHeight - data.scrollElDistance.top))
+                ));
             });
 
         this.gridster.fixItemsPositions();
@@ -246,7 +287,9 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
 
         this.isDisabled = true;
         if (itemIdx >= 0) {
-            delete this.gridster.items[this.gridster.items.indexOf(item.itemComponent)];
+            delete this.gridster.items[
+                this.gridster.items.indexOf(item.itemComponent)
+            ];
         }
         this.gridster.onDragOut(item);
     }
@@ -255,14 +298,18 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
         this.isDisabled = false;
     }
 
-    private getScrollPositionFromParents(element: Element, data = { scrollTop: 0, scrollLeft: 0 })
-        : { scrollTop: number, scrollLeft: number } {
-
+    private getScrollPositionFromParents(
+        element: Element,
+        data = { scrollTop: 0, scrollLeft: 0 }
+    ): { scrollTop: number; scrollLeft: number } {
         if (element.parentElement && element.parentElement !== document.body) {
             data.scrollTop += element.parentElement.scrollTop;
             data.scrollLeft += element.parentElement.scrollLeft;
 
-            return this.getScrollPositionFromParents(element.parentElement, data);
+            return this.getScrollPositionFromParents(
+                element.parentElement,
+                data
+            );
         }
 
         return {
@@ -277,72 +324,90 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
     private connectGridsterPrototype() {
         this.gridsterPrototype.observeDropOut(this.gridster).subscribe();
 
-        const dropOverObservable = <ConnectableObservable<any>>this.gridsterPrototype.observeDropOver(this.gridster).pipe(publish());
+        const dropOverObservable = <ConnectableObservable<any>>(
+            this.gridsterPrototype
+                .observeDropOver(this.gridster)
+                .pipe(publish())
+        );
 
-        const dragObservable = this.gridsterPrototype.observeDragOver(this.gridster);
+        const dragObservable = this.gridsterPrototype.observeDragOver(
+            this.gridster
+        );
 
-        dragObservable.dragOver.pipe(filter(() => !this.isDisabled)).subscribe((prototype: GridsterItemPrototypeDirective) => {
-            if (!this.isPrototypeEntered) {
-                return;
-            }
-            this.gridster.onDrag(prototype.item);
-        });
-
-        dragObservable.dragEnter.pipe(filter(() => !this.isDisabled)).subscribe((prototype: GridsterItemPrototypeDirective) => {
-            this.isPrototypeEntered = true;
-
-            if (this.gridster.items.indexOf(prototype.item) < 0) {
-                this.gridster.items.push(prototype.item);
-            }
-            this.gridster.onStart(prototype.item);
-            prototype.setDragContextGridster(this.gridster);
-
-            if (this.parent) {
-                this.parent.disable(prototype.item);
-            }
-            this.prototypeEnter.emit({item: prototype.item});
-        });
-
-        dragObservable.dragOut.pipe(filter(() => !this.isDisabled)).subscribe((prototype: GridsterItemPrototypeDirective) => {
-            if (!this.isPrototypeEntered) {
-                return;
-            }
-            this.gridster.onDragOut(prototype.item);
-            this.isPrototypeEntered = false;
-
-            this.prototypeOut.emit({item: prototype.item});
-
-            if (this.parent) {
-                this.parent.enable();
-
-                this.parent.isPrototypeEntered = true;
-                if (this.parent.gridster.items.indexOf(prototype.item) < 0) {
-                    this.parent.gridster.items.push(prototype.item);
+        dragObservable.dragOver
+            .pipe(filter(() => !this.isDisabled))
+            .subscribe((prototype: GridsterItemPrototypeDirective) => {
+                if (!this.isPrototypeEntered) {
+                    return;
                 }
-                this.parent.gridster.onStart(prototype.item);
-                prototype.setDragContextGridster(this.parent.gridster);
-                // timeout is needed to be sure that "enter" event is fired after "out"
-                setTimeout(() => {
-                    this.parent.prototypeEnter.emit({item: prototype.item});
-                    prototype.onEnter(this.parent.gridster);
-                });
-            }
-        });
+                this.gridster.onDrag(prototype.item);
+            });
 
-        dropOverObservable.pipe(filter(() => !this.isDisabled)).subscribe((data: any) => {
-            if (!this.isPrototypeEntered) {
-                return;
-            }
+        dragObservable.dragEnter
+            .pipe(filter(() => !this.isDisabled))
+            .subscribe((prototype: GridsterItemPrototypeDirective) => {
+                this.isPrototypeEntered = true;
 
-            this.gridster.onStop(data.item.item);
-            this.gridster.removeItem(data.item.item);
+                if (this.gridster.items.indexOf(prototype.item) < 0) {
+                    this.gridster.items.push(prototype.item);
+                }
+                this.gridster.onStart(prototype.item);
+                prototype.setDragContextGridster(this.gridster);
 
-            this.isPrototypeEntered = false;
-            if (this.parent) {
-                this.parent.enable();
-            }
-            this.prototypeDrop.emit({item: data.item.item});
-        });
+                if (this.parent) {
+                    this.parent.disable(prototype.item);
+                }
+                this.prototypeEnter.emit({ item: prototype.item });
+            });
+
+        dragObservable.dragOut
+            .pipe(filter(() => !this.isDisabled))
+            .subscribe((prototype: GridsterItemPrototypeDirective) => {
+                if (!this.isPrototypeEntered) {
+                    return;
+                }
+                this.gridster.onDragOut(prototype.item);
+                this.isPrototypeEntered = false;
+
+                this.prototypeOut.emit({ item: prototype.item });
+
+                if (this.parent) {
+                    this.parent.enable();
+
+                    this.parent.isPrototypeEntered = true;
+                    if (
+                        this.parent.gridster.items.indexOf(prototype.item) < 0
+                    ) {
+                        this.parent.gridster.items.push(prototype.item);
+                    }
+                    this.parent.gridster.onStart(prototype.item);
+                    prototype.setDragContextGridster(this.parent.gridster);
+                    // timeout is needed to be sure that "enter" event is fired after "out"
+                    setTimeout(() => {
+                        this.parent.prototypeEnter.emit({
+                            item: prototype.item
+                        });
+                        prototype.onEnter(this.parent.gridster);
+                    });
+                }
+            });
+
+        dropOverObservable
+            .pipe(filter(() => !this.isDisabled))
+            .subscribe((data: any) => {
+                if (!this.isPrototypeEntered) {
+                    return;
+                }
+
+                this.gridster.onStop(data.item.item);
+                this.gridster.removeItem(data.item.item);
+
+                this.isPrototypeEntered = false;
+                if (this.parent) {
+                    this.parent.enable();
+                }
+                this.prototypeDrop.emit({ item: data.item.item });
+            });
 
         dropOverObservable.connect();
     }
@@ -351,8 +416,12 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
         this.gridster.options.dragAndDrop = true;
 
         this.gridster.items
-            .filter(item => item.itemComponent && item.itemComponent.dragAndDrop)
-            .forEach((item: GridListItem) => item.itemComponent.enableDragDrop());
+            .filter(
+                item => item.itemComponent && item.itemComponent.dragAndDrop
+            )
+            .forEach((item: GridListItem) =>
+                item.itemComponent.enableDragDrop()
+            );
     }
 
     private disableDraggable() {
@@ -360,7 +429,9 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
 
         this.gridster.items
             .filter(item => item.itemComponent)
-            .forEach((item: GridListItem) => item.itemComponent.disableDraggable());
+            .forEach((item: GridListItem) =>
+                item.itemComponent.disableDraggable()
+            );
     }
 
     private enableResizable() {
@@ -368,12 +439,16 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
 
         this.gridster.items
             .filter(item => item.itemComponent && item.itemComponent.resizable)
-            .forEach((item: GridListItem) => item.itemComponent.enableResizable());
+            .forEach((item: GridListItem) =>
+                item.itemComponent.enableResizable()
+            );
     }
 
     private disableResizable() {
         this.gridster.options.resizable = false;
 
-        this.gridster.items.forEach((item: GridListItem) => item.itemComponent.disableResizable());
+        this.gridster.items.forEach((item: GridListItem) =>
+            item.itemComponent.disableResizable()
+        );
     }
 }
