@@ -18,10 +18,10 @@ export class Draggable {
         fromEvent(document, 'mousemove'),
         fromEvent(document, 'touchmove', { passive: false })
     ).pipe(share());
-    private mouseup: Observable<{} | Event> = Observable.merge(
-        Observable.fromEvent(document, 'mouseup'),
-        Observable.fromEvent(document, 'touchend'),
-        Observable.fromEvent(document, 'touchcancel')
+    private mouseup: Observable<{} | Event> = merge(
+        fromEvent(document, 'mouseup'),
+        fromEvent(document, 'touchend'),
+        fromEvent(document, 'touchcancel')
     ).pipe(share());
     private mousedown: Observable<{} | Event>;
     private config = {
@@ -35,9 +35,9 @@ export class Draggable {
 
     constructor(element: Element, config = {}) {
         this.element = element;
-        this.mousedown = Observable.merge(
-            Observable.fromEvent(element, 'mousedown'),
-            Observable.fromEvent(element, 'touchstart')
+        this.mousedown = merge(
+            fromEvent(element, 'mousedown'),
+            fromEvent(element, 'touchstart')
         ).pipe(share());
 
         this.config = { ...this.config, ...config };

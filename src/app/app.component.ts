@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { GridsterComponent } from './angular2gridster/gridster.component';
-import { IGridsterOptions } from './angular2gridster/IGridsterOptions';
-import { IGridsterDraggableOptions } from './angular2gridster/IGridsterDraggableOptions';
+import { OnInit } from '@angular/core';
+import { ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { GridsterComponent, IGridsterOptions, IGridsterDraggableOptions } from 'projects/angular2gridster/src/lib';
 
 @Component({
     selector: 'demo-root',

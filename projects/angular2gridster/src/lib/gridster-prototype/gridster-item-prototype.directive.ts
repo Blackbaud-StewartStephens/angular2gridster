@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy,
     NgZone} from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 
 import { GridsterPrototypeService } from './gridster-prototype.service';
 import { GridListItem } from '../gridList/GridListItem';
@@ -189,7 +189,7 @@ export class GridsterItemPrototypeDirective implements OnInit, OnDestroy {
                 });
             });
 
-        const scrollSub = Observable.fromEvent(document, 'scroll')
+        const scrollSub = fromEvent(document, 'scroll')
             .subscribe(() => {
                 if (this.$element) {
                     this.updateParentElementData();

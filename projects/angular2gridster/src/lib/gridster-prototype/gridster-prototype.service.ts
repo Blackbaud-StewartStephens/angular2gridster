@@ -6,6 +6,7 @@ import { GridsterService } from '../gridster.service';
 import { GridsterItemPrototypeDirective } from './gridster-item-prototype.directive';
 import { utils } from '../utils/utils';
 import {DraggableEvent} from '../utils/DraggableEvent';
+import { merge } from 'rxjs';
 
 @Injectable()
 export class GridsterPrototypeService {
@@ -89,7 +90,7 @@ export class GridsterPrototypeService {
             })
         );
 
-        const dragExt = Observable.merge(
+        const dragExt = merge(
                 // dragStartSubject is connected in case when item prototype is placed above gridster
                 // and drag enter is not fired
                 this.dragStartSubject.pipe(map(() => ({ item: null, isOver: false, isDrop: false }))),
