@@ -1,6 +1,84 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [9.0.0](https://github.com/swiety85/angular2gridster/compare/v8.1.2...v9.0.0) (2020-02-28)
+
+
+### Features
+
+* Upgrade to Angular 9 ([c3fee22](https://github.com/swiety85/angular2gridster/commit/c3fee22))
+
+
+### Bug Fixes
+
+* Fix security issues ([6f02e08](https://github.com/swiety85/angular2gridster/commit/6f02e08))
+* import style according to angular style guide ([a4004a5](https://github.com/swiety85/angular2gridster/commit/a4004a5))
+
+
+
+### [8.1.2](https://github.com/swiety85/angular2gridster/compare/v8.1.1...v8.1.2) (2019-10-23)
+
+
+### Bug Fixes
+
+* Use rounding again for cell size ([9962aa0](https://github.com/swiety85/angular2gridster/commit/9962aa0)), closes [#347](https://github.com/swiety85/angular2gridster/issues/347)
+
+
+
+### [8.1.1](https://github.com/swiety85/angular2gridster/compare/v8.1.0...v8.1.1) (2019-10-10)
+
+
+### Bug Fixes
+
+* Fix lodash Vulnerable version ([7e25199](https://github.com/swiety85/angular2gridster/commit/7e25199))
+* **drag:** Remove rounding in clalculating cell sizes and item positions ([536cd41](https://github.com/swiety85/angular2gridster/commit/536cd41)), closes [#346](https://github.com/swiety85/angular2gridster/issues/346) [#334](https://github.com/swiety85/angular2gridster/issues/334)
+
+
+
+## [8.1.0](https://github.com/swiety85/angular2gridster/compare/v8.0.1...v8.1.0) (2019-08-20)
+
+
+### Bug Fixes
+
+* **demo:** Fix resize widget by buttons in demo ([3aab09c](https://github.com/swiety85/angular2gridster/commit/3aab09c))
+
+
+### Features
+
+* **config:** add Gridster responsiveToParent option ([35ca28c](https://github.com/swiety85/angular2gridster/commit/35ca28c)), closes [#201](https://github.com/swiety85/angular2gridster/issues/201) [#333](https://github.com/swiety85/angular2gridster/issues/333)
+
+
+
+### [8.0.1](https://github.com/swiety85/angular2gridster/compare/v8.0.0...v8.0.1) (2019-06-10)
+
+
+### Features
+
+* Upgrade to Angular8 ([2bcc03f](https://github.com/swiety85/angular2gridster/commit/2bcc03f))
+
+
+
+<a name="7.0.2"></a>
+## [7.0.2](https://github.com/swiety85/angular2gridster/compare/v7.0.1...v7.0.2) (2019-01-26)
+
+
+### Bug Fixes
+
+* **demo:** demo not scrollable content ([1fb0cd4](https://github.com/swiety85/angular2gridster/commit/1fb0cd4))
+* **drag:** fix drag mouse position in scrollabe container ([d044b54](https://github.com/swiety85/angular2gridster/commit/d044b54))
+
+
+
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/swiety85/angular2gridster/compare/v7.0.0...v7.0.1) (2018-11-06)
+
+
+### Bug Fixes
+
+* **build:** fix peerDependencies ([d9f6f02](https://github.com/swiety85/angular2gridster/commit/d9f6f02))
+
+
 
 <a name="7.0.2"></a>
 ## [7.0.2](https://github.com/swiety85/angular2gridster/compare/v7.0.1...v7.0.2) (2019-01-26)

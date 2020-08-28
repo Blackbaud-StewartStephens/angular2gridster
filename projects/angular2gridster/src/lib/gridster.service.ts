@@ -479,13 +479,13 @@ export class GridsterService {
     private calculateCellWidth() {
         const gridsterWidth = parseFloat(window.getComputedStyle(this.gridsterComponent.$element).width);
 
-        return Math.floor(gridsterWidth / this.options.lanes);
+        return gridsterWidth / this.options.lanes;
     }
 
     private calculateCellHeight() {
         const gridsterHeight = parseFloat(window.getComputedStyle(this.gridsterComponent.$element).height);
 
-        return Math.floor(gridsterHeight / this.options.lanes);
+        return gridsterHeight / this.options.lanes;
     }
 
     private applySizeToItems() {

@@ -123,7 +123,7 @@
             <div class="panel-heading">
                 <h5 class="panel-title">{{ widget.title }}</h5>
             </div>
-  
+
             <div class="panel-body">
                 <p>
                   Position: {{itemComp?.item?.x}} x {{itemComp?.item?.y}}<br>
@@ -150,10 +150,10 @@
                 <p *ngIf="widget.contents">
                     <button (click)="widget.contents.splice(0, 1)">remove content</button>
                 </p>
-  
+
                 <pre>{{ widget | json }}</pre>
-  
-            </div>  
+
+            </div>
           </div>
       </ngx-gridster-item>
 
