@@ -12,4 +12,4 @@ export * from './lib/GridsterOptions';
 export * from './lib/gridster-prototype/gridster-prototype.service';
 export * from './lib/gridster.service';
 export * from './lib/gridList/GridListItem';
-
+export * from './lib/gridList/gridList';

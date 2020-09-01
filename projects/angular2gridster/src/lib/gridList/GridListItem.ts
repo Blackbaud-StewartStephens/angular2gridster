@@ -134,7 +134,7 @@ export class GridListItem {
         // itemComponent is undefined when dragging a prototype
         let contentHeight: number;
         if (this.itemComponent) {
-            contentHeight = this.itemComponent.contentWrapper.nativeElement.offsetheight || 0;
+            contentHeight = this.itemComponent.elementRef.nativeElement.offsetheight || 0;
         } else {
             contentHeight = 0;
         }

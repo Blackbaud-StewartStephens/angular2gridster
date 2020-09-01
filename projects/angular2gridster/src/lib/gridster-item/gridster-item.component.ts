@@ -315,7 +315,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
                 }
                 lastOffsetHeight = offsetHeight;
             });
-            observer.observe(this.contentWrapper.nativeElement, {
+            observer.observe(this.elementRef.nativeElement, {
                 childList: true,
                 subtree: true,
                 attributes: true,
@@ -334,6 +334,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
         .filter(propName => changes[propName] && !changes[propName].isFirstChange())
         .forEach((propName: keyof GridsterItemComponent) => {
             if (changes[propName].currentValue > this.options.maxWidth) {
+                // @ts-ignore
                 this[propName] = this.options.maxWidth;
                 setTimeout(() => this[<keyof GridsterItemComponent>(propName + 'Change')].emit(this[propName]));
             }
@@ -344,6 +345,7 @@ export class GridsterItemComponent implements OnInit, OnChanges, AfterViewInit, 
             .filter(propName => changes[propName] && !changes[propName].isFirstChange())
             .forEach((propName: keyof GridsterItemComponent) => {
                 if (changes[propName].currentValue > this.options.maxHeight) {
+                    // @ts-ignore
                     this[propName] = this.options.maxHeight;
                     setTimeout(() => this[<keyof GridsterItemComponent>(propName + 'Change')].emit(this[propName]));
                 }
