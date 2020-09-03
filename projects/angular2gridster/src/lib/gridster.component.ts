@@ -92,10 +92,10 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
     @Input() public draggableOptions: IGridsterDraggableOptions;
     @Input() public parent: GridsterComponent;
 
-    @ViewChild('positionHighlight') public $positionHighlight: any;
+    @ViewChild('positionHighlight', { static: true }) $positionHighlight;
     @ViewChild('backgroundGrid') public $backgroundGrid: any;
-    @HostBinding('class.gridster--dragging') public isDragging = false;
-    @HostBinding('class.gridster--resizing') public isResizing = false;
+    @HostBinding('class.gridster--dragging') isDragging = false;
+    @HostBinding('class.gridster--resizing') isResizing = false;
 
     @HostBinding('class.gridster--ready') public isReady = false;
     public gridster: GridsterService;
@@ -117,7 +117,7 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.gridsterOptions = new GridsterOptions(this.options);
+        this.gridsterOptions = new GridsterOptions(this.options, this.$element);
 
         if (this.options.useCSSTransforms) {
             this.$element.classList.add('css-transform');
@@ -129,7 +129,7 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
                 if (this.gridster.gridList) {
                     this.gridster.gridList.options = options;
                 }
-                this.optionsChange.emit(options);
+                setTimeout(() => this.optionsChange.emit(options));
             })
         );
 
@@ -150,6 +150,15 @@ export class GridsterComponent implements OnInit, AfterContentInit, OnDestroy {
                     this.updateGridsterElementData()
                 )
             );
+            const scrollableContainer = utils.getScrollableContainer(this.$element);
+            if (scrollableContainer) {
+                this.subscription.add(
+                    fromEvent(scrollableContainer, 'scroll', { passive: true })
+                    .subscribe(() =>
+                        this.updateGridsterElementData()
+                    )
+                );
+            }
         });
         const scrollableContainer = utils.getScrollableContainer(this.$element);
         if (scrollableContainer) {

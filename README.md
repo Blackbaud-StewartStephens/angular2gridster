@@ -15,6 +15,8 @@ Development progress can be tracked in [Milestones](https://github.com/swiety85/
 
 ## Versions:
 
+-   Version **9.x** works with **Angular 9.x**.
+-   Version **8.x** works with **Angular 8.x**.
 -   Version **7.x** works with **Angular 7.x**.
 -   Version **6.x** works with **Angular 6.x**.
 -   Version **5.x** works with **Angular 5.x**.
@@ -60,13 +62,13 @@ System.config({
     map: {
         // ...
         rxjs: 'node_modules/rxjs',
-        angular2gridster: 'node_modules/angular2gridster'
+        angular2gridster: 'node_modules/angular2gridster',
     },
     packages: {
         // ...
-        rxjs: { defaultExtension: 'js' },
-        angular2gridster: { main: 'dist/index.js', defaultExtension: 'js' }
-    }
+        rxjs: {defaultExtension: 'js'},
+        angular2gridster: {main: 'dist/index.js', defaultExtension: 'js'},
+    },
 });
 ```
 
@@ -74,12 +76,15 @@ System.config({
 
 ```html
 <ngx-gridster [options]="gridsterOptions" [draggableOptions]="{ handlerClass: 'panel-heading' }">
-
-  <ngx-gridster-item *ngFor="let widget of widgets"
-                 [(x)]="widget.x" [(y)]="widget.y" [(w)]="widget.w" [(h)]="widget.h">
-      <!--some content-->
-  </ngx-gridster-item>
-
+    <ngx-gridster-item
+        *ngFor="let widget of widgets"
+        [(x)]="widget.x"
+        [(y)]="widget.y"
+        [(w)]="widget.w"
+        [(h)]="widget.h"
+    >
+        <!-- some content -->
+    </ngx-gridster-item>
 </ngx-gridster>
 ```
 
@@ -87,12 +92,15 @@ For version before 6.0.0:
 
 ```html
 <gridster [options]="gridsterOptions" [draggableOptions]="{ handlerClass: 'panel-heading' }">
-
-  <gridster-item *ngFor="let widget of widgets"
-                 [(x)]="widget.x" [(y)]="widget.y" [(w)]="widget.w" [(h)]="widget.h">
-      <!--some content-->
-  </gridster-item>
-
+    <gridster-item
+        *ngFor="let widget of widgets"
+        [(x)]="widget.x"
+        [(y)]="widget.y"
+        [(w)]="widget.w"
+        [(h)]="widget.h"
+    >
+        <!-- some content -->
+    </gridster-item>
 </gridster>
 ```
 
@@ -189,7 +197,7 @@ As a temporary solution copy files from `/projects/angular2gridster/src/lib` fol
 If the current behavior is a bug or you can illustrate your feature request better with an example,
 please provide the steps to reproduce and if possible a minimal demo of the problem via CodeSandbox:
 
-[![Edit Angular2gridster demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/w77q2rqll)
+[![Edit Angular](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/angular-otned?fontsize=14)
 
 The project is in development so don't hesitate to writte any questions or suggestion on issue list.
 I look forward to get a response from you.
