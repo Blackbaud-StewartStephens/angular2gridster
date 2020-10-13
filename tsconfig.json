@@ -27,5 +27,8 @@
   "include": [
     "src/**/*",
     "projects/**/*"
-  ]
+  ],
+  "angularCompilerOptions": {
+      "enableIvy": false
+  }
 }
